@@ -12,6 +12,7 @@ mod eval;
 mod error;
 mod expr;
 mod step;
+mod wasm;
 
 #[cfg(test)]
 mod tests;

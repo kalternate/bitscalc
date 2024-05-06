@@ -1,47 +1,62 @@
 <script>
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+    import { fade } from 'svelte/transition';
+    import { flip } from 'svelte/animate';
+    import init, {evaluate_command} from 'bitscalclib';
+
+    init();
+
+    let command = '';
+    let results = []
+    let counter = 0;
+
+
+    function evaluateInput() {
+        let evaluation = evaluate_command(command);
+
+        if (evaluation.result) {
+            let result = {
+                command: command,
+                output: evaluation.result,
+                index: counter
+            }
+
+            counter += 1
+
+            results.push(result);
+            command = '';
+            results = results;
+        }
+    }
+
+    function handleKeydown(event) {
+        if (event.key === "Enter") {
+            evaluateInput();
+        }
+    }
+
 </script>
 
-<main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+<main class="flex flex-grow flex-col">
+    <div class=" flex flex-grow justify-center">
+        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-indigo-500 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={command} on:keydown={handleKeydown}/>
+    </div>
 
-  <div class="card">
-    <Counter />
-  </div>
+    <div class="flex justify-center">
+        <div class="flex flex-grow flex-col-reverse mt-2 justify-center justify-items-center max-w-[64rem]">
+            {#each results as result (result.index)}
+            <div animate:flip={{ delay: 0, duration: 250}} in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-700 flex-shrink rounded-xl p-2 text-md my-2  justify-items-center shadow-md">
+                <div class="font-mono">{result.command}</div>
+                <div class="font-mono">{result.output.dec}</div>
+                <div class="font-mono">{result.output.hex}</div>
+                <div class="font-mono">{result.output.bin}</div>
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+            </div>
+            {/each}
+        </div>
+    </div>
+    
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+
 </style>
