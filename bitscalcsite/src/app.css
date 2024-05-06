@@ -79,3 +79,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.montserrat {
+    font-family: 'Montserrat Variable', sans-serif;
+}

@@ -2,7 +2,9 @@
     import { fade } from 'svelte/transition';
     import { flip } from 'svelte/animate';
     import init, {evaluate_command} from 'bitscalclib';
-
+    import ValueDisplay from './lib/ValueDisplay.svelte'
+    import '@fontsource-variable/montserrat';
+    
     init();
 
     let command = '';
@@ -44,12 +46,10 @@
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col-reverse mt-2 justify-center justify-items-center max-w-[64rem]">
             {#each results as result (result.index)}
-            <div animate:flip={{ delay: 0, duration: 250}} in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-700 flex-shrink rounded-xl p-2 text-md my-2  justify-items-center shadow-md">
+            <div animate:flip={{ delay: 0, duration: 250}} in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 flex-shrink rounded-xl p-2 text-md my-2  justify-items-center shadow-md">
                 <div class="font-mono">{result.command}</div>
-                <div class="font-mono">{result.output.dec}</div>
-                <div class="font-mono">{result.output.hex}</div>
-                <div class="font-mono">{result.output.bin}</div>
-
+                <hr class="my-2">
+                <ValueDisplay value={result.output}/>
             </div>
             {/each}
         </div>
