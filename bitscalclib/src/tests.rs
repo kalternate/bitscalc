@@ -1,7 +1,7 @@
 use wasm_bindgen_test::*;
 wasm_bindgen_test_configure!(run_in_browser);
 
-use crate::{evaluate, tokenize};
+use crate::evaluate;
 
 #[test]
 #[wasm_bindgen_test]
@@ -28,6 +28,5 @@ fn parens() {
 }
 
 fn test_eval(expr: &'static str) -> i64 {
-    let tokens = tokenize(expr).unwrap();
-    evaluate(&tokens).unwrap()
+    evaluate(expr).result.unwrap()
 }

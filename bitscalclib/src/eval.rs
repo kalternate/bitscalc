@@ -11,23 +11,59 @@ use std::ops::Neg;
 use std::ops::Shr;
 use std::ops::Shl;
 
+use wasm_bindgen::prelude::wasm_bindgen;
+
+use crate::tokenize;
 use crate::Step;
 use crate::{Error, Expr};
-
-
-
-pub fn evaluate(expressions: &[Expr]) -> Result<i64, Error> {
-    let mut steps = Default::default();
-    evaluate_rec(expressions, &mut steps)
+use crate::FormattedValue;
+#[derive(Debug)]
+#[wasm_bindgen(getter_with_clone)]
+pub struct Evaluation {
+    pub command: String,
+    pub steps: Vec<Step>,
+    pub result: Option<i64>,
+    pub format: Option<FormattedValue>,
+    pub error: Option<String>
 }
 
-pub fn evaluate_steps(expressions: &[Expr]) -> Result<(i64, Vec<Step>), Error> {
-    let mut steps: Vec<Step> = Default::default();
-    let value = evaluate_rec(expressions, &mut steps)?;
-    Ok((value, steps))
+#[wasm_bindgen]
+pub fn evaluate(command: &str) -> Evaluation {
+
+    match tokenize(command) {
+    Ok(exprs) => {
+        let mut steps = Vec::new();
+        let eval = evaluate_exprs(&exprs, &mut steps);
+    
+        let (result, format, error) = match eval {
+            Ok(value) => {
+                (Some(value), Some(FormattedValue::from_i64(value)), None)
+            },
+            Err(err) => {
+                (None, None, Some(err.0))
+            },
+        };
+
+        Evaluation {
+            command: command.to_string(),
+            steps,
+            result,
+            format,
+            error
+        }
+    },
+    Err(error) => Evaluation {
+        command: command.to_string(),
+        steps: Vec::new(),
+        result: None,
+        format: None,
+        error: Some(error.0)
+        },
+    }
 }
 
-fn evaluate_rec(expressions: &[Expr], steps: &mut Vec<Step>) -> Result<i64, Error> {
+
+fn evaluate_exprs(expressions: &[Expr], steps: &mut Vec<Step>) -> Result<i64, Error> {
 
     let mut index = 0;
     let mut exprs = VecDeque::new();
@@ -64,7 +100,7 @@ fn evaluate_rec(expressions: &[Expr], steps: &mut Vec<Step>) -> Result<i64, Erro
                 end += 1;
             }
 
-            let evaled = evaluate_rec(expressions.get(start+1..end-1).unwrap(), steps)?;
+            let evaled = evaluate_exprs(expressions.get(start+1..end-1).unwrap(), steps)?;
             exprs.push_back(Expr::Number(evaled));
             
             index = end;

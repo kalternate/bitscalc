@@ -1,7 +1,7 @@
 <script>
     import { fade } from 'svelte/transition';
     import { flip } from 'svelte/animate';
-    import init, {evaluate_command} from 'bitscalclib';
+    import init, {evaluate} from 'bitscalclib';
     import ValueDisplay from './lib/ValueDisplay.svelte'
     import '@fontsource-variable/montserrat';
     
@@ -14,12 +14,12 @@
 
 
     function evaluateInput() {
-        let evaluation = evaluate_command(command);
+        let evaluation = evaluate(command);
 
-        if (evaluation.result) {
+        if (evaluation.format) {
             let result = {
                 command: command,
-                output: evaluation.result,
+                output: evaluation.format,
                 index: counter
             }
 

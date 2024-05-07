@@ -1,37 +1,43 @@
 use std::fmt::Display;
 
+use wasm_bindgen::prelude::wasm_bindgen;
+
+use crate::FormattedValue;
+
+#[derive(Debug, Clone)]
+#[wasm_bindgen(getter_with_clone)]
 pub struct  Step {
-    op: &'static str,
-    left: Option<i64>,
-    right: i64,
-    result: i64
+    pub op: String,
+    pub left: Option<FormattedValue>,
+    pub right: FormattedValue,
+    pub result: FormattedValue
 }
 
 impl Step {
-    pub fn unary(op: &'static str, right: i64, result: i64) -> Self {
+    pub fn unary(op: impl ToString, right: i64, result: i64) -> Self {
         Step {
-            op,
+            op: op.to_string(),
             left: None,
-            right,
-            result
+            right: FormattedValue::from_i64(right),
+            result: FormattedValue::from_i64(result)
         }
     }
 
-    pub fn binary(op: &'static str, left: i64, right: i64, result: i64) -> Self {
+    pub fn binary(op: impl ToString, left: i64, right: i64, result: i64) -> Self {
         Step {
-            op,
-            left: Some(left),
-            right,
-            result
+            op: op.to_string(),
+            left: Some(FormattedValue::from_i64(left)),
+            right: FormattedValue::from_i64(right),
+            result: FormattedValue::from_i64(result)
         }
     }
 }
 
 impl Display for Step {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self.left {
-            Some(left) => write!(f, "{} {} {} = {}", left, self.op, self.right, self.result),
-            None => write!(f, "{}{} = {}", self.op, self.right, self.result),
+        match &self.left {
+            Some(left) => write!(f, "{} {} {} = {}", left.dec, self.op, self.right.dec, self.result.dec),
+            None => write!(f, "{}{} = {}", self.op, self.right.dec, self.result.dec),
         }
     }
 }
