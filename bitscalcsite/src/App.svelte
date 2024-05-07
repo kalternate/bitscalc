@@ -10,6 +10,7 @@
     let command = '';
     let results = []
     let counter = 0;
+    let error = '';
 
 
     function evaluateInput() {
@@ -26,7 +27,10 @@
 
             results.push(result);
             command = '';
+            error = '';
             results = results;
+        } else if (evaluation.error) {
+            error = evaluation.error;
         }
     }
 
@@ -44,14 +48,22 @@
     </div>
 
     <div class="flex justify-center">
-        <div class="flex flex-grow flex-col-reverse mt-2 justify-center justify-items-center max-w-[64rem]">
+        <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
             {#each results as result (result.index)}
-            <div animate:flip={{ delay: 0, duration: 250}} in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 flex-shrink rounded-xl p-2 text-md my-2  justify-items-center shadow-md">
+            <div animate:flip={{ delay: 0, duration: 250}} in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 flex-shrink rounded-xl p-2 text-md mt-4  justify-items-center shadow-md">
                 <div class="font-mono">{result.command}</div>
                 <hr class="my-2">
                 <ValueDisplay value={result.output}/>
             </div>
             {/each}
+
+            <!--{#if error}
+                <div class="bg-red-300 text-red-900 rounded-xl px-2 py-1 my-1 border-red-400 border-2" in:fade={{ delay: 0, duration: 250 }}>{error}</div>
+            {/if}-->
+
+            {#if error}
+                <div class="text-red-400 mx-1" in:fade={{ delay: 0, duration: 250 }}>{error}</div>
+            {/if}
         </div>
     </div>
     
