@@ -10,21 +10,22 @@ fn main() -> Result<(), std::io::Error> {
         write!(terminal, "bitscalc$ ")?;
 
         while let Ok(input) = terminal.read_line() {
-            let tokens = tokenize(&input);
-
-            if !tokens.is_empty() {
-                match evaluate_steps(&tokens) {
-                    Ok((value, steps)) => {
-                        for step in steps {
-                            writeln!(terminal, "{}", step)?;
-                        }
-                        writeln!(terminal, "> {}", value)?;
-                    },
-                    Err(err) => writeln!(terminal, "{}", err.0)?,
-                };
+            match tokenize(&input) {
+                Ok(tokens) => {
+                    if !tokens.is_empty() {
+                        match evaluate_steps(&tokens) {
+                            Ok((value, steps)) => {
+                                for step in steps {
+                                    writeln!(terminal, "{}", step)?;
+                                }
+                                writeln!(terminal, "> {}", value)?;
+                            },
+                            Err(err) => writeln!(terminal, "{}", err.0)?,
+                        };
+                    }
+                },
+                Err(err) => writeln!(terminal, "{}", err.0)?,
             }
-
-
             write!(terminal, "bitscalc$ ")?;
         }
     }

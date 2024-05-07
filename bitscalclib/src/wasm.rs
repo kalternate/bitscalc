@@ -32,26 +32,33 @@ impl Value {
 #[wasm_bindgen]
 pub fn evaluate_command(command: String) -> Evaluation {
 
-    let exprs = tokenize(&command);
-    let eval_result = evaluate(&exprs);
+    match tokenize(&command) {
+    Ok(exprs) => {
+        let eval_result = evaluate(&exprs);
     
-    let mut error = None;
+        let mut error = None;
 
-    let result = match eval_result {
-        Ok(value) => {
-            Some(Value::from_i64(value))
-        },
-        Err(err) => {
-            error = Some(err.0);
-            None
-        },
-    };
-    
+        let result = match eval_result {
+            Ok(value) => {
+                Some(Value::from_i64(value))
+            },
+            Err(err) => {
+                error = Some(err.0);
+                None
+            },
+        };
 
-    Evaluation {
+        Evaluation {
+            command,
+            result,
+            error
+        }
+    },
+    Err(error) => Evaluation {
         command,
-        result,
-        error
+        result: None,
+        error: Some(error.0)
+        },
     }
 }
 

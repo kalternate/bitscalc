@@ -28,6 +28,6 @@ fn parens() {
 }
 
 fn test_eval(expr: &'static str) -> i64 {
-    let tokens = tokenize(expr);
+    let tokens = tokenize(expr).unwrap();
     evaluate(&tokens).unwrap()
 }
