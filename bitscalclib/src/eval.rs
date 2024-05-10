@@ -11,14 +11,14 @@ use std::ops::Neg;
 use std::ops::Shr;
 use std::ops::Shl;
 
+use serde::Serialize;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::tokenize;
 use crate::Step;
 use crate::{Error, Expr};
 use crate::FormattedValue;
-#[derive(Debug)]
-#[wasm_bindgen(getter_with_clone)]
+#[derive(Debug, Serialize)]
 pub struct Evaluation {
     pub command: String,
     pub steps: Vec<Step>,
@@ -27,7 +27,6 @@ pub struct Evaluation {
     pub error: Option<String>
 }
 
-#[wasm_bindgen]
 pub fn evaluate(command: &str) -> Evaluation {
 
     match tokenize(command) {
@@ -59,6 +58,16 @@ pub fn evaluate(command: &str) -> Evaluation {
         format: None,
         error: Some(error.0)
         },
+    }
+}
+
+#[wasm_bindgen]
+pub fn evaluatetojson(command: &str) -> String {
+    let eval = evaluate(command);
+
+    match serde_json::to_string(&eval) {
+        Ok(json) =>json,
+        Err(e) => format!("{{\"command\":\"{}\",\"error\":\"error: {}\",\"steps\":[]}}", command, e.to_string()),
     }
 }
 

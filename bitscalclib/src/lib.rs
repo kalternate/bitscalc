@@ -3,6 +3,7 @@
 pub use token::tokenize;
 pub use expr::Expr;
 pub use eval::evaluate;
+pub use eval::evaluatetojson;
 pub use error::Error;
 pub use step::Step;
 pub use value::FormattedValue;

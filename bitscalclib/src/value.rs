@@ -1,7 +1,6 @@
-use wasm_bindgen::prelude::wasm_bindgen;
+use serde::Serialize;
 
-#[derive(Debug, Clone)]
-#[wasm_bindgen(getter_with_clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct FormattedValue {
     pub dec: String,
     pub hex: String,

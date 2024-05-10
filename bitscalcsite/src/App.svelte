@@ -1,10 +1,10 @@
 <script>
     import { fade } from 'svelte/transition';
-    import { flip } from 'svelte/animate';
-    import init, {evaluate} from 'bitscalclib';
-    import ValueDisplay from './lib/ValueDisplay.svelte'
+    import init, {evaluatetojson} from 'bitscalclib';
     import '@fontsource-variable/montserrat';
-    
+    import { flip } from 'svelte/animate';
+    import ResultDisplay from './lib/ResultDisplay.svelte';
+
     init();
 
     let command = '';
@@ -14,12 +14,11 @@
 
 
     function evaluateInput() {
-        let evaluation = evaluate(command);
+        let evaluation = JSON.parse(evaluatetojson(command));
 
         if (evaluation.format) {
             let result = {
-                command: command,
-                output: evaluation.format,
+                evaluation: evaluation,
                 index: counter
             }
 
@@ -50,11 +49,9 @@
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
             {#each results as result (result.index)}
-            <div animate:flip={{ delay: 0, duration: 250}} in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 flex-shrink rounded-xl p-2 text-md mt-4  justify-items-center shadow-md">
-                <div class="font-mono">{result.command}</div>
-                <hr class="my-2">
-                <ValueDisplay value={result.output}/>
-            </div>
+                <div animate:flip={{ delay: 0, duration: 250}}>
+                    <ResultDisplay evaluation={result.evaluation}></ResultDisplay>
+                </div>
             {/each}
 
             <!--{#if error}

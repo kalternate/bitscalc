@@ -1,11 +1,10 @@
 use std::fmt::Display;
 
-use wasm_bindgen::prelude::wasm_bindgen;
+use serde::Serialize;
 
 use crate::FormattedValue;
 
-#[derive(Debug, Clone)]
-#[wasm_bindgen(getter_with_clone)]
+#[derive(Debug, Clone, Serialize)]
 pub struct  Step {
     pub op: String,
     pub left: Option<FormattedValue>,

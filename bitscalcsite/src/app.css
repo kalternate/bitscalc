@@ -83,3 +83,7 @@ button:focus-visible {
 .montserrat {
     font-family: 'Montserrat Variable', sans-serif;
 }
+
+.toptext {
+    line-height: 10px;
+}
