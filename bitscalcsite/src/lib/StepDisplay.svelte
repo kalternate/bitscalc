@@ -11,7 +11,7 @@
     </div>
     {/if}
     <div class="flex">
-        <div class="w-6 text-right mr-1">{step.op}</div>
+        <div class="w-6 text-right mr-1 font-mono">{step.op}</div>
         <ValueDisplay value={step.right}/>
     </div>
     <hr/>
