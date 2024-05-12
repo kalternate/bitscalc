@@ -1,7 +1,7 @@
 use crate::{Error, Expr};
 
 
-pub fn tokenize(s: &str) -> Result<Vec<Expr>, Error> {
+pub fn scan(s: &str) -> Result<Vec<Expr>, Error> {
     let chars: Vec<char> = s.chars().collect();
     let mut start = 0;
     let mut tokens = Vec::new();

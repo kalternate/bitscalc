@@ -1,6 +1,6 @@
 
 
-pub use token::tokenize;
+pub use scan::scan;
 pub use expr::Expr;
 pub use eval::evaluate;
 pub use eval::evaluatetojson;
@@ -8,7 +8,7 @@ pub use error::Error;
 pub use step::Step;
 pub use value::FormattedValue;
 
-mod token;
+mod scan;
 mod eval;
 mod error;
 mod expr;

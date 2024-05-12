@@ -14,7 +14,7 @@ use std::ops::Shl;
 use serde::Serialize;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::tokenize;
+use crate::scan;
 use crate::Step;
 use crate::{Error, Expr};
 use crate::FormattedValue;
@@ -29,7 +29,7 @@ pub struct Evaluation {
 
 pub fn evaluate(command: &str) -> Evaluation {
 
-    match tokenize(command) {
+    match scan(command) {
     Ok(exprs) => {
         let mut steps = Vec::new();
         let eval = evaluate_exprs(&exprs, &mut steps);
