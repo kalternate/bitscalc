@@ -1,11 +1,13 @@
 use std::fmt::Display;
 
+use crate::Token;
+
 #[derive(Debug, Clone)]
 pub enum Expr {
     Op(&'static str),
     ParenOpen,
     ParenClose,
-    Number(i64)
+    NumberToken(i64, Token)
 }
 
 impl Display for Expr {
@@ -14,7 +16,7 @@ impl Display for Expr {
             Expr::Op(op) => write!(f, "{}", op),
             Expr::ParenOpen => write!(f, "("),
             Expr::ParenClose => write!(f, ")"),
-            Expr::Number(number) => write!(f, "{}", number),
+            Expr::NumberToken(_, token) => write!(f, "{}", token.text),
         }
     }
 }

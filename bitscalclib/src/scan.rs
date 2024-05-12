@@ -1,8 +1,8 @@
-use crate::{Error, Expr};
+use crate::{token, Error, Expr, FormattedValue, Token};
 
 
-pub fn scan(s: &str) -> Result<Vec<Expr>, Error> {
-    let chars: Vec<char> = s.chars().collect();
+pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
+    let chars: Vec<char> = cmd.chars().collect();
     let mut start = 0;
     let mut tokens = Vec::new();
 
@@ -13,8 +13,17 @@ pub fn scan(s: &str) -> Result<Vec<Expr>, Error> {
                 end += 1;
             }
             let token_str: String = chars.get(start..end).unwrap().iter().collect();
+            
+            let number = parse_numeric(&token_str)?;
+            let token = Token{
+                text: token_str,
+                tag: Some(*tag_counter),
+                format: Some(FormattedValue::from_i64(number)),
+            };
 
-            tokens.push(Expr::Number(parse_numeric(&token_str)?));
+            *tag_counter += 1;
+
+            tokens.push(Expr::NumberToken(number, token));
             start = end;
         } else {
             match start_char {
