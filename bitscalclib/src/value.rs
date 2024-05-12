@@ -16,7 +16,3 @@ impl FormattedValue {
         }
     }
 }
-
-
-
-
