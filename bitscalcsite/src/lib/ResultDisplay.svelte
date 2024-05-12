@@ -8,7 +8,11 @@
 </script>
 
 <div in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 flex-shrink rounded-xl p-2 text-md mt-4  justify-items-center shadow-md">
-    <div class="font-mono">{evaluation.command}</div>
+    <div class="font-mono">
+        {#each evaluation.command as token}
+            {token.text}
+        {/each}
+    </div>
     <hr class="my-2">
     {#each evaluation.steps as step}
         <div class="ml-5 flex">
