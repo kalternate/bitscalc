@@ -25,7 +25,7 @@ pub struct Evaluation {
     pub command: Option<Vec<Token>>,
     pub steps: Vec<Step>,
     pub result: Option<i64>,
-    pub format: Option<FormattedValue>,
+    pub token: Option<Token>,
     pub error: Option<String>
 }
 
@@ -37,7 +37,7 @@ pub fn evaluate(command: &str) -> Evaluation {
                 command: None,
                 steps: Vec::new(),
                 result: None,
-                format: None,
+                token: None,
                 error: Some($err.into())
             }
         };
@@ -50,7 +50,7 @@ pub fn evaluate(command: &str) -> Evaluation {
             let mut steps = Vec::new();
             match evaluate_exprs(&exprs, &mut steps, &mut tag_counter) {
                 Ok(result_expr) => {
-                    if let Expr::NumberToken(result_num, result_tok) = result_expr {
+                    if let Expr::NumberToken(result_num, result_token) = result_expr {
                         let command = Some(
                             exprs.into_iter().map(|expr| Token::from(expr)).collect()
                         );
@@ -59,7 +59,7 @@ pub fn evaluate(command: &str) -> Evaluation {
                             command,
                             steps,
                             result: Some(result_num),
-                            format: Some(FormattedValue::from_i64(result_num)),
+                            token: Some(result_token),
                             error: None,
                         }
                     } else {
@@ -174,8 +174,8 @@ fn evaluate_binary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_coun
 
                             *tag_counter += 1;
 
-                            exprs.push_front(Expr::NumberToken(result_num, result_tok));
-                            steps.push(Step::binary(symbol, left_num, right_num, result_num));
+                            exprs.push_front(Expr::NumberToken(result_num, result_tok.clone()));
+                            steps.push(Step::binary(symbol, left_tok, right_tok, result_tok));
                             keep_expr = false;
                             break;
                         }
@@ -221,10 +221,10 @@ fn evaluate_unary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_count
 
                             *tag_counter += 1;
 
-                            exprs.push_back(Expr::NumberToken(result_num, result_tok));
+                            exprs.push_back(Expr::NumberToken(result_num, result_tok.clone()));
 
                             if cur_symbol != "-" {
-                                steps.push(Step::unary(symbol, operand_num, result_num));
+                                steps.push(Step::unary(symbol, operand_tok, result_tok));
                             }
 
                             keep_expr = false;

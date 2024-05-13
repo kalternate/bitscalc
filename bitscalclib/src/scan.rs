@@ -1,4 +1,4 @@
-use crate::{token, Error, Expr, FormattedValue, Token};
+use crate::{Error, Expr, FormattedValue, Token};
 
 
 pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {

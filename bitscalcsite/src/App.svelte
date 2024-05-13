@@ -14,9 +14,11 @@
 
 
     function evaluateInput() {
-        let evaluation = JSON.parse(evaluatetojson(command));
 
-        if (evaluation.format) {
+        let evalJson = evaluatetojson(command);
+        let evaluation = JSON.parse(evalJson);
+        
+        if (evaluation.token) {
             let result = {
                 evaluation: evaluation,
                 index: counter
@@ -43,7 +45,7 @@
 
 <main class="flex flex-grow flex-col">
     <div class=" flex flex-grow justify-center">
-        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-indigo-500 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={command} on:keydown={handleKeydown}/>
+        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-sky-300 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={command} on:keydown={handleKeydown}/>
     </div>
 
     <div class="flex justify-center">
@@ -53,10 +55,6 @@
                     <ResultDisplay evaluation={result.evaluation}></ResultDisplay>
                 </div>
             {/each}
-
-            <!--{#if error}
-                <div class="bg-red-300 text-red-900 rounded-xl px-2 py-1 my-1 border-red-400 border-2" in:fade={{ delay: 0, duration: 250 }}>{error}</div>
-            {/if}-->
 
             {#if error}
                 <div class="text-red-400 mx-1" in:fade={{ delay: 0, duration: 250 }}>{error}</div>

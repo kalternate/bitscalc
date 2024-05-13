@@ -2,32 +2,32 @@ use std::fmt::Display;
 
 use serde::Serialize;
 
-use crate::FormattedValue;
+use crate::Token;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct  Step {
     pub op: String,
-    pub left: Option<FormattedValue>,
-    pub right: FormattedValue,
-    pub result: FormattedValue
+    pub left: Option<Token>,
+    pub right: Token,
+    pub result: Token
 }
 
 impl Step {
-    pub fn unary(op: impl ToString, right: i64, result: i64) -> Self {
+    pub fn unary(op: impl ToString, right: Token, result: Token) -> Self {
         Step {
             op: op.to_string(),
             left: None,
-            right: FormattedValue::from_i64(right),
-            result: FormattedValue::from_i64(result)
+            right,
+            result
         }
     }
 
-    pub fn binary(op: impl ToString, left: i64, right: i64, result: i64) -> Self {
+    pub fn binary(op: impl ToString, left: Token, right: Token, result: Token) -> Self {
         Step {
             op: op.to_string(),
-            left: Some(FormattedValue::from_i64(left)),
-            right: FormattedValue::from_i64(right),
-            result: FormattedValue::from_i64(result)
+            left: Some(left),
+            right,
+            result
         }
     }
 }
@@ -35,8 +35,8 @@ impl Step {
 impl Display for Step {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match &self.left {
-            Some(left) => write!(f, "{} {} {} = {}", left.dec, self.op, self.right.dec, self.result.dec),
-            None => write!(f, "{}{} = {}", self.op, self.right.dec, self.result.dec),
+            Some(left) => write!(f, "{} {} {} = {}", left.text, self.op, self.right.text, self.result.text),
+            None => write!(f, "{}{} = {}", self.op, self.right.text, self.result.text),
         }
     }
 }

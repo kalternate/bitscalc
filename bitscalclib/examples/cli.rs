@@ -13,13 +13,12 @@ fn main() -> Result<(), std::io::Error> {
            
             let eval = evaluate(&input);
 
-            if let Some(result) = eval.format {
+            if let Some(result) = eval.token.map(|t| t.format).flatten() {
                 for step in eval.steps {
                     if let Some(left) = step.left {
-                        println!("{} {} {} = {}", left.dec, step.op, step.right.dec, step.result.dec)
+                        println!("{} {} {} = {}", left.text, step.op, step.right.text, step.result.text)
                     } else {
-                        println!("{}{} = {}", step.op, step.right.dec, step.result.dec)
-
+                        println!("{}{} = {}", step.op, step.right.text, step.result.text)
                     }
                 }
                 println!("{} ", result.dec)
