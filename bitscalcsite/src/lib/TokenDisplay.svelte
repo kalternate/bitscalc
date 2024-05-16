@@ -46,7 +46,7 @@
 </script>
 
 {#if token.tag && canHighlight}
-    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit} role="note">
+    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit} role="button" tabindex="0">
         {#if highlightNow}
             <span class="font-mono text-sky-300 underline decoration-zinc-600 hover:decoration-sky-300">{display}</span>
         {:else}

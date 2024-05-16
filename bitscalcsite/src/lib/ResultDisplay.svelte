@@ -11,19 +11,23 @@
 </script>
 
 <div in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 flex-shrink rounded-xl p-2 text-md mt-4  justify-items-center shadow-md">
+
     <div class="font-mono">
         {#each evaluation.command as token}
-            <TokenDisplay token={token} highlight={highlight}/>
+            <TokenDisplay token={token} highlight={highlight} canHighlight={evaluation.steps.length}/>
         {/each}
     </div>
-    <hr class="my-2">
-    {#each evaluation.steps as step}
-        <div class="ml-5 flex">
-            <div class="">
-                <StepDisplay step={step} highlight={highlight}/>
+
+    {#if evaluation.steps.length}
+        <hr class="my-2">
+        {#each evaluation.steps as step}
+            <div class="ml-5 flex">
+                <div class="">
+                    <StepDisplay step={step} highlight={highlight}/>
+                </div>
             </div>
-        </div>
-    {/each}
+        {/each}
+    {/if}
 
     <hr class="my-2">
     <div class="flex flex-col">
