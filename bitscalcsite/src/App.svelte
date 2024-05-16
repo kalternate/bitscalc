@@ -17,11 +17,11 @@
     commandChannel.subscribe(evaluateCommand);
 
     function evaluateCommand(command) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
         if (command === "") {
             return;
         }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 
         let evalJson = evaluatetojson(command);
         let evaluation = JSON.parse(evalJson);
