@@ -4,16 +4,24 @@
     import '@fontsource-variable/montserrat';
     import { flip } from 'svelte/animate';
     import ResultDisplay from './lib/ResultDisplay.svelte';
-
+    import { writable } from 'svelte/store';    
     init();
 
-    let command = '';
+    let userInput = '';
     let results = []
     let counter = 0;
     let error = '';
 
+    let commandChannel = writable("");
 
-    function evaluateInput() {
+    commandChannel.subscribe(evaluateCommand);
+
+    function evaluateCommand(command) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        if (command === "") {
+            return;
+        }
 
         let evalJson = evaluatetojson(command);
         let evaluation = JSON.parse(evalJson);
@@ -27,9 +35,10 @@
             counter += 1
 
             results.push(result);
-            command = '';
+            userInput = '';
             error = '';
             results = results;
+            commandChannel.set("")
         } else if (evaluation.error) {
             error = evaluation.error;
         }
@@ -37,7 +46,7 @@
 
     function handleKeydown(event) {
         if (event.key === "Enter") {
-            evaluateInput();
+            commandChannel.set(userInput)
         }
     }
 
@@ -45,14 +54,14 @@
 
 <main class="flex flex-grow flex-col">
     <div class=" flex flex-grow justify-center">
-        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-sky-300 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={command} on:keydown={handleKeydown}/>
+        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-sky-300 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={userInput} on:keydown={handleKeydown}/>
     </div>
 
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
             {#each results as result (result.index)}
                 <div animate:flip={{ delay: 0, duration: 250}}>
-                    <ResultDisplay evaluation={result.evaluation}></ResultDisplay>
+                    <ResultDisplay evaluation={result.evaluation} commandChannel={commandChannel}/>
                 </div>
             {/each}
 

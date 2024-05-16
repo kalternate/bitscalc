@@ -5,6 +5,7 @@
     import { writable } from 'svelte/store';
 
     export let evaluation;
+    export let commandChannel;
 
     let highlight = writable(0);
     
@@ -14,7 +15,7 @@
 
     <div class="font-mono">
         {#each evaluation.command as token}
-            <TokenDisplay token={token} highlight={highlight} canHighlight={evaluation.steps.length}/>
+            <TokenDisplay token={token} highlight={highlight} canHighlight={evaluation.steps.length} commandChannel={commandChannel}/>
         {/each}
     </div>
 
@@ -23,7 +24,7 @@
         {#each evaluation.steps as step}
             <div class="ml-5 flex">
                 <div class="">
-                    <StepDisplay step={step} highlight={highlight}/>
+                    <StepDisplay step={step} highlight={highlight}  commandChannel={commandChannel}/>
                 </div>
             </div>
         {/each}
