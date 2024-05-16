@@ -5,6 +5,7 @@
     import { flip } from 'svelte/animate';
     import ResultDisplay from './lib/ResultDisplay.svelte';
     import { writable } from 'svelte/store';    
+    import logo from './assets/logo.svg'
     init();
 
     let userInput = '';
@@ -59,6 +60,17 @@
 
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
+
+            <div class="bg-zinc-800 rounded-xl p-2 text-md mt-4  justify-items-center shadow-md">
+                <img alt="Bitscalc" src={logo}>
+                <hr class="my-2">
+                <div class="font-mono">
+                    This calculator evaluates binary integer operations including arithmetic, bitwise, and logical operators. It uses C-style operator precedence and will evaluate sub-expressions in parentheses first. Use it to reason about how integer operators are evaluated in programming languages like C. Results will be displayed in decimal, hexadecimal, and binary.
+                </div>
+
+
+            </div>
+
             {#each results as result (result.index)}
                 <div animate:flip={{ delay: 0, duration: 250}}>
                     <ResultDisplay evaluation={result.evaluation} commandChannel={commandChannel}/>
