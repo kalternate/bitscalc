@@ -65,7 +65,7 @@
                 <img alt="Bitscalc" src={logo}>
                 <hr class="my-2">
                 <div class="font-mono">
-                    This calculator evaluates binary integer operations including arithmetic, bitwise, and logical operators. It uses C-style operator precedence and will evaluate sub-expressions in parentheses first. Use it to reason about how integer operators are evaluated in programming languages like C. Results will be displayed in decimal, hexadecimal, and binary.
+                    Bitscalc is a binary integer calculator for quickly evaluating programming expressions. It supports arithmetic, logical, and bitwise operators with C-like precedence. Step-by-step results are shown in decimal, hexadecimal, and binary. Enter an expression above to get started.
                 </div>
 
 
