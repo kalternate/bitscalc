@@ -14,7 +14,11 @@ dist-ssr
 *.local
 
 # Editor directories and files
-bitscalcsite/.vscode
+lib/.vscode
+lib/target
+lib/pkg
+.vscode
+
 !.vscode/extensions.json
 .idea
 .DS_Store

@@ -1,4 +1,4 @@
 #!/bin/sh 
 
-cd bitscalclib
+cd lib
 cargo r --example=cli

@@ -1,4 +1,4 @@
 #!/bin/sh 
 
-cd bitscalclib
+cd lib
 wasm-pack build --target web

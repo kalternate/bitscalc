@@ -1,6 +1,6 @@
 <script>
     import { fade } from 'svelte/transition';
-    import init, {evaluatetojson} from 'bitscalclib';
+    import init, {evaluatetojson} from '../../lib/pkg';
     import '@fontsource-variable/montserrat';
     import { flip } from 'svelte/animate';
     import ResultDisplay from './lib/ResultDisplay.svelte';
