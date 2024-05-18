@@ -71,6 +71,79 @@ fn bitwise_xor() {
 
 #[test]
 #[wasm_bindgen_test]
+fn rel_lt() {
+    assert_eq!(test_eval("1<12"), 1);
+    assert_eq!(test_eval("231<21"), 0);
+    assert_eq!(test_eval("21<21"), 0);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn rel_lte() {
+    assert_eq!(test_eval("1<=12"), 1);
+    assert_eq!(test_eval("231<=21"), 0);
+    assert_eq!(test_eval("21<=21"), 1);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn rel_gt() {
+    assert_eq!(test_eval("1>12"), 0);
+    assert_eq!(test_eval("231>21"), 1);
+    assert_eq!(test_eval("21>21"), 0);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn rel_gte() {
+    assert_eq!(test_eval("1>=12"), 0);
+    assert_eq!(test_eval("231>=21"), 1);
+    assert_eq!(test_eval("21>=21"), 1);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn log_eq() {
+    assert_eq!(test_eval("10==0xa"), 1);
+    assert_eq!(test_eval("10==12"), 0);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn log_ne() {
+    assert_eq!(test_eval("10!=0xa"), 0);
+    assert_eq!(test_eval("10!=12"), 1);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn log_and() {
+    assert_eq!(test_eval("1&&12"), 1);
+    assert_eq!(test_eval("1&&0"), 0);
+    assert_eq!(test_eval("0&&32"), 0);
+    assert_eq!(test_eval("0&&0"), 0);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn log_xor() {
+    assert_eq!(test_eval("1^^12"), 0);
+    assert_eq!(test_eval("1^^0"), 1);
+    assert_eq!(test_eval("0^^32"), 1);
+    assert_eq!(test_eval("0^^0"), 0);
+}
+
+#[test]
+#[wasm_bindgen_test]
+fn log_or() {
+    assert_eq!(test_eval("1||12"), 1);
+    assert_eq!(test_eval("1||0"), 1);
+    assert_eq!(test_eval("0||32"), 1);
+    assert_eq!(test_eval("0||0"), 0);
+}
+
+#[test]
+#[wasm_bindgen_test]
 fn lsh() {
     assert_eq!(test_eval("1<<2"), 4);
     assert_eq!(test_eval("-1<<3"), -8);
