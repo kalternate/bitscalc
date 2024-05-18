@@ -1,0 +1,21 @@
+<script>
+    import { fade } from "svelte/transition";
+    import logo from '../assets/logo.svg'
+    import ResultDisplay from "./ResultDisplay.svelte";
+
+    export let panelData;
+    export let commandChannel;
+
+</script>
+
+<div in:fade={{ delay: 250, duration: 250 }} class="bg-zinc-800 rounded-xl p-2 text-md mt-4 justify-items-center shadow-md">
+    {#if panelData.flavor === "evaluation"}
+        <ResultDisplay evaluation={panelData.evaluation} commandChannel={commandChannel}/>
+    {:else if panelData.flavor === "info"}
+        <img alt="Bitscalc Logo" src={logo}>
+        <hr class="my-2">
+        <div class="font-mono">
+            Bitscalc is a binary integer calculator for quickly evaluating programming expressions. It supports arithmetic, logical, and bitwise operators with C-like precedence. Step-by-step results are shown in decimal, hexadecimal, and binary. Enter an expression above to get started.
+        </div>
+    {/if}
+</div>

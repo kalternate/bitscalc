@@ -3,46 +3,53 @@
     import init, {evaluatetojson} from '../../lib/pkg';
     import '@fontsource-variable/montserrat';
     import { flip } from 'svelte/animate';
-    import ResultDisplay from './lib/ResultDisplay.svelte';
     import { writable } from 'svelte/store';    
-    import logo from './assets/logo.svg'
+    import Panel from './lib/Panel.svelte';
     init();
 
     let userInput = '';
-    let results = []
+    let panels = []
     let counter = 0;
     let error = '';
 
     let commandChannel = writable("");
 
     commandChannel.subscribe(evaluateCommand);
+    evaluateCommand("info")
 
     function evaluateCommand(command) {
         if (command === "") {
             return;
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        let evalJson = evaluatetojson(command);
-        let evaluation = JSON.parse(evalJson);
-        
-        if (evaluation.token) {
-            let result = {
-                evaluation: evaluation,
+        } else if (command === "info") {
+            let panelData = {
+                flavor: "info",
                 index: counter
             }
+            panels.push(panelData);
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            counter += 1
+            let evalJson = evaluatetojson(command);
+            let evaluation = JSON.parse(evalJson);
 
-            results.push(result);
-            userInput = '';
-            error = '';
-            results = results;
-            commandChannel.set("")
-        } else if (evaluation.error) {
-            error = evaluation.error;
+            if (evaluation.token) {
+                let panelData = {
+                    evaluation: evaluation,
+                    flavor: "evaluation",
+                    index: counter
+                }
+                panels.push(panelData);
+            } else if (evaluation.error) {
+                error = evaluation.error;
+                return;
+            }
         }
+
+        counter += 1
+        userInput = '';
+        error = '';
+        panels = panels;
+        commandChannel.set("")
     }
 
     function handleKeydown(event) {
@@ -60,20 +67,9 @@
 
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
-
-            <div class="bg-zinc-800 rounded-xl p-2 text-md mt-4  justify-items-center shadow-md">
-                <img alt="Bitscalc" src={logo}>
-                <hr class="my-2">
-                <div class="font-mono">
-                    Bitscalc is a binary integer calculator for quickly evaluating programming expressions. It supports arithmetic, logical, and bitwise operators with C-like precedence. Step-by-step results are shown in decimal, hexadecimal, and binary. Enter an expression above to get started.
-                </div>
-
-
-            </div>
-
-            {#each results as result (result.index)}
+            {#each panels as panelData (panelData.index)}
                 <div animate:flip={{ delay: 0, duration: 250}}>
-                    <ResultDisplay evaluation={result.evaluation} commandChannel={commandChannel}/>
+                    <Panel panelData={panelData} commandChannel={commandChannel}/>
                 </div>
             {/each}
 
