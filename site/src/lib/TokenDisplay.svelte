@@ -15,7 +15,7 @@
 
     let display = "";
 
-    switch (format) {
+    $:switch (format) {
         case "dec":
             display = token.format.dec;
             break;
