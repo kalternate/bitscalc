@@ -51,13 +51,13 @@
 </script>
 
 {#if token.tag && canHighlight}
-    <button on:mouseenter={mouseEnter} on:mouseleave={mouseExit} on:click={onClick} class="decoration-zinc-600 hover:decoration-sky-300 underline">
+    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit} on:click={onClick} class="decoration-zinc-600 hover:decoration-sky-300 underline">
         {#if highlightNow}
             <span class="font-mono text-sky-300">{display}</span>
         {:else}
             <span class="font-mono hover:text-sky-300">{display}</span>
         {/if}
-    </button>
+    </span>
 {:else}
     {#if highlightNow}
             <span class="font-mono text-sky-300">{display}</span>

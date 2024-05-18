@@ -18,12 +18,7 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
   text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
 }
 
 body {
@@ -64,7 +59,6 @@ button {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
   }
   button {
     background-color: #f9f9f9;
