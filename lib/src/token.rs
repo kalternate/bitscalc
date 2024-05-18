@@ -6,23 +6,23 @@ use crate::{Expr, FormattedValue};
 pub struct Token {
     pub text: String,
     pub tag: Option<usize>,
-    pub format: Option<FormattedValue>
+    pub format: Option<FormattedValue>,
 }
 
 impl From<Expr> for Token {
     fn from(expr: Expr) -> Self {
         match expr {
-            Expr::Op(op) => Token{
+            Expr::Op(op) => Token {
                 text: op.into(),
                 tag: None,
                 format: None,
             },
-            Expr::ParenOpen => Token{
+            Expr::ParenOpen => Token {
                 text: "(".into(),
                 tag: None,
                 format: None,
             },
-            Expr::ParenClose => Token{
+            Expr::ParenClose => Token {
                 text: ")".into(),
                 tag: None,
                 format: None,

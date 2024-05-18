@@ -1,24 +1,24 @@
 use std::collections::VecDeque;
 use std::ops::Add;
-use std::ops::Sub;
-use std::ops::Mul;
-use std::ops::Div;
 use std::ops::BitAnd;
 use std::ops::BitOr;
 use std::ops::BitXor;
-use std::ops::Not;
+use std::ops::Div;
+use std::ops::Mul;
 use std::ops::Neg;
-use std::ops::Shr;
+use std::ops::Not;
 use std::ops::Shl;
+use std::ops::Shr;
+use std::ops::Sub;
 
 use serde::Serialize;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::scan;
+use crate::FormattedValue;
 use crate::Step;
 use crate::Token;
 use crate::{Error, Expr};
-use crate::FormattedValue;
 
 #[derive(Debug, Serialize)]
 pub struct Evaluation {
@@ -26,11 +26,10 @@ pub struct Evaluation {
     pub steps: Vec<Step>,
     pub result: Option<i64>,
     pub token: Option<Token>,
-    pub error: Option<String>
+    pub error: Option<String>,
 }
 
 pub fn evaluate(command: &str) -> Evaluation {
-
     macro_rules! eval_error {
         ($err:expr) => {
             Evaluation {
@@ -38,7 +37,7 @@ pub fn evaluate(command: &str) -> Evaluation {
                 steps: Vec::new(),
                 result: None,
                 token: None,
-                error: Some($err.into())
+                error: Some($err.into()),
             }
         };
     }
@@ -51,9 +50,8 @@ pub fn evaluate(command: &str) -> Evaluation {
             match evaluate_exprs(&exprs, &mut steps, &mut tag_counter) {
                 Ok(result_expr) => {
                     if let Expr::NumberToken(result_num, result_token) = result_expr {
-                        let command = Some(
-                            exprs.into_iter().map(|expr| Token::from(expr)).collect()
-                        );
+                        let command =
+                            Some(exprs.into_iter().map(|expr| Token::from(expr)).collect());
 
                         Evaluation {
                             command,
@@ -65,11 +63,11 @@ pub fn evaluate(command: &str) -> Evaluation {
                     } else {
                         eval_error!("error: expression didn't reduce to number")
                     }
-                },
+                }
                 Err(error) => eval_error!(error.0),
             }
-        },
-    Err(error) => eval_error!(error.0),
+        }
+        Err(error) => eval_error!(error.0),
     }
 }
 
@@ -78,19 +76,27 @@ pub fn evaluatetojson(command: &str) -> String {
     let eval = evaluate(command);
 
     match serde_json::to_string(&eval) {
-        Ok(json) =>json,
-        Err(e) => format!("{{\"command\":\"{}\",\"error\":\"error: {}\",\"steps\":[]}}", command, e.to_string()),
+        Ok(json) => json,
+        Err(e) => format!(
+            "{{\"command\":\"{}\",\"error\":\"error: {}\",\"steps\":[]}}",
+            command,
+            e.to_string()
+        ),
     }
 }
 
-
-fn evaluate_exprs(expressions: &[Expr], steps: &mut Vec<Step>, mut tag_counter: &mut usize) -> Result<Expr, Error> {
-
+fn evaluate_exprs(
+    expressions: &[Expr],
+    steps: &mut Vec<Step>,
+    mut tag_counter: &mut usize,
+) -> Result<Expr, Error> {
     let mut index = 0;
     let mut exprs = VecDeque::new();
 
     if expressions.is_empty() {
-        return Err(Error(format!("parse error: cannot fully evaluate expression")));
+        return Err(Error(format!(
+            "parse error: cannot fully evaluate expression"
+        )));
     }
 
     while let Some(expr) = expressions.get(index) {
@@ -102,28 +108,31 @@ fn evaluate_exprs(expressions: &[Expr], steps: &mut Vec<Step>, mut tag_counter: 
 
             while run {
                 match expressions.get(end) {
-                    Some(ex) => {
-                        match ex {
-                            Expr::ParenOpen => {depth += 1;},
-                            Expr::ParenClose => {
-                                if depth > 0 {
-                                    depth -= 1;
-                                } else {
-                                    run = false;
-                                }
-                            },
-                            _ => {}
-                            
+                    Some(ex) => match ex {
+                        Expr::ParenOpen => {
+                            depth += 1;
                         }
+                        Expr::ParenClose => {
+                            if depth > 0 {
+                                depth -= 1;
+                            } else {
+                                run = false;
+                            }
+                        }
+                        _ => {}
                     },
                     None => todo!(),
                 }
                 end += 1;
             }
 
-            let evaled = evaluate_exprs(expressions.get(start+1..end-1).unwrap(), steps, tag_counter)?;
+            let evaled = evaluate_exprs(
+                expressions.get(start + 1..end - 1).unwrap(),
+                steps,
+                tag_counter,
+            )?;
             exprs.push_back(evaled);
-            
+
             index = end;
         } else {
             exprs.push_back(expr.clone());
@@ -131,29 +140,65 @@ fn evaluate_exprs(expressions: &[Expr], steps: &mut Vec<Step>, mut tag_counter: 
         }
     }
 
-    exprs = evaluate_unary_op(exprs, steps, &mut tag_counter, &[("~", i64::not), ("-", i64::neg), ("!", |v| if v == 0 { 1 } else { 0 })]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("*", i64::mul), ("/", i64::div), ("%", i64::rem_euclid)]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter,&[("+", i64::add), ("-", i64::sub)]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("<<", i64::shl), (">>", i64::shr)]);
+    exprs = evaluate_unary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[
+            ("~", i64::not),
+            ("-", i64::neg),
+            ("!", |v| if v == 0 { 1 } else { 0 }),
+        ],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("*", i64::mul), ("/", i64::div), ("%", i64::rem_euclid)],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("+", i64::add), ("-", i64::sub)],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("<<", i64::shl), (">>", i64::shr)],
+    );
 
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", i64::bitand)]);
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^", i64::bitxor)]);
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("|", i64::bitor)]);
 
     if exprs.len() != 1 {
-        Err(Error(format!("parse error: cannot fully evaluate expression")))
+        Err(Error(format!(
+            "parse error: cannot fully evaluate expression"
+        )))
     } else {
         if let Some(expr) = exprs.pop_front() {
             Ok(expr)
         } else {
-            Err(Error(format!("parse error: cannot fully evaluate expression")))
+            Err(Error(format!(
+                "parse error: cannot fully evaluate expression"
+            )))
         }
     }
 }
 
-fn evaluate_binary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_counter: &mut usize, op_table: &[(&'static str, fn(i64, i64) -> i64)]) -> VecDeque<Expr> {
+fn evaluate_binary_op(
+    mut exprs: VecDeque<Expr>,
+    steps: &mut Vec<Step>,
+    tag_counter: &mut usize,
+    op_table: &[(&'static str, fn(i64, i64) -> i64)],
+) -> VecDeque<Expr> {
     let mut results = VecDeque::new();
-    
+
     while let Some(expr) = exprs.pop_front() {
         let mut keep_expr = true;
         if let Expr::NumberToken(left_num, left_tok) = expr.clone() {
@@ -187,25 +232,29 @@ fn evaluate_binary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_coun
         if keep_expr {
             results.push_back(expr);
         }
-    };
+    }
 
     results
 }
 
-fn evaluate_unary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_counter: &mut usize, op_table: &[(&'static str, fn(i64) -> i64)]) -> VecDeque<Expr> {
+fn evaluate_unary_op(
+    mut exprs: VecDeque<Expr>,
+    steps: &mut Vec<Step>,
+    tag_counter: &mut usize,
+    op_table: &[(&'static str, fn(i64) -> i64)],
+) -> VecDeque<Expr> {
     let mut results = VecDeque::new();
-    
+
     while let Some(expr) = exprs.pop_back() {
         let mut keep_expr = true;
 
         if let Expr::NumberToken(operand_num, operand_tok) = expr.clone() {
             if !exprs.is_empty() {
-                if let Some(Expr::Op(cur_symbol)) = exprs.get(exprs.len()-1).cloned() {
+                if let Some(Expr::Op(cur_symbol)) = exprs.get(exprs.len() - 1).cloned() {
                     for (symbol, op_fn) in op_table {
                         if cur_symbol == *symbol {
-
                             if cur_symbol == "-" && exprs.len() > 1 {
-                                if let Some(Expr::NumberToken(_, _)) = exprs.get(exprs.len()-2) {
+                                if let Some(Expr::NumberToken(_, _)) = exprs.get(exprs.len() - 2) {
                                     break;
                                 }
                             }
@@ -231,7 +280,6 @@ fn evaluate_unary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_count
                             break;
                         }
                     }
-                    
                 }
             }
         }
@@ -239,7 +287,7 @@ fn evaluate_unary_op(mut exprs: VecDeque<Expr>, steps: &mut Vec<Step>, tag_count
         if keep_expr {
             results.push_front(expr);
         }
-    };
+    }
 
     results
 }

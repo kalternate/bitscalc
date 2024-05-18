@@ -7,7 +7,7 @@ pub enum Expr {
     Op(&'static str),
     ParenOpen,
     ParenClose,
-    NumberToken(i64, Token)
+    NumberToken(i64, Token),
 }
 
 impl Display for Expr {

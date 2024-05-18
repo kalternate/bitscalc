@@ -1,6 +1,5 @@
 use crate::{Error, Expr, FormattedValue, Token};
 
-
 pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
     let chars: Vec<char> = cmd.chars().collect();
     let mut start = 0;
@@ -13,9 +12,9 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
                 end += 1;
             }
             let token_str: String = chars.get(start..end).unwrap().iter().collect();
-            
+
             let number = parse_numeric(&token_str)?;
-            let token = Token{
+            let token = Token {
                 text: token_str,
                 tag: Some(*tag_counter),
                 format: Some(FormattedValue::from_i64(number)),
@@ -27,21 +26,21 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
             start = end;
         } else {
             match start_char {
-                '+' => { tokens.push(Expr::Op("+")) }
-                '-' => { tokens.push(Expr::Op("-")) }
-                '*' => { tokens.push(Expr::Op("*")) }
-                '/' => { tokens.push(Expr::Op("/")) }
-                '%' => { tokens.push(Expr::Op("%")) }
-                '|' => { tokens.push(Expr::Op("|")) }
-                '&' => { tokens.push(Expr::Op("&")) }
-                '^' => { tokens.push(Expr::Op("^")) }
-                '!' => { tokens.push(Expr::Op("!")) }
-                '~' => { tokens.push(Expr::Op("~")) }
-                '(' => { tokens.push(Expr::ParenOpen) }
-                ')' => { tokens.push(Expr::ParenClose) }
+                '+' => tokens.push(Expr::Op("+")),
+                '-' => tokens.push(Expr::Op("-")),
+                '*' => tokens.push(Expr::Op("*")),
+                '/' => tokens.push(Expr::Op("/")),
+                '%' => tokens.push(Expr::Op("%")),
+                '|' => tokens.push(Expr::Op("|")),
+                '&' => tokens.push(Expr::Op("&")),
+                '^' => tokens.push(Expr::Op("^")),
+                '!' => tokens.push(Expr::Op("!")),
+                '~' => tokens.push(Expr::Op("~")),
+                '(' => tokens.push(Expr::ParenOpen),
+                ')' => tokens.push(Expr::ParenClose),
 
                 '>' => {
-                    if chars.get(start+1).is_some_and(|n| *n == '>') {
+                    if chars.get(start + 1).is_some_and(|n| *n == '>') {
                         start += 1;
                         tokens.push(Expr::Op(">>"))
                     } else {
@@ -50,7 +49,7 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
                 }
 
                 '<' => {
-                    if chars.get(start+1).is_some_and(|n| *n == '<') {
+                    if chars.get(start + 1).is_some_and(|n| *n == '<') {
                         start += 1;
                         tokens.push(Expr::Op("<<"))
                     } else {
@@ -58,12 +57,11 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
                     }
                 }
 
-                _ => {  }
+                _ => {}
             };
             start += 1;
         }
     }
-
 
     Ok(tokens)
 }
@@ -80,5 +78,6 @@ fn parse_numeric(token: &str) -> Result<i64, Error> {
         } else {
             i64::from_str_radix(token, 10)
         }
-    }.map_err(|_| Error(format!("error: cannot parse '{}'", token)))
+    }
+    .map_err(|_| Error(format!("error: cannot parse '{}'", token)))
 }

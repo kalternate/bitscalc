@@ -4,7 +4,7 @@ use serde::Serialize;
 pub struct FormattedValue {
     pub dec: String,
     pub hex: String,
-    pub bin: String
+    pub bin: String,
 }
 
 impl FormattedValue {

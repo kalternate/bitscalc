@@ -5,11 +5,11 @@ use serde::Serialize;
 use crate::Token;
 
 #[derive(Debug, Clone, Serialize)]
-pub struct  Step {
+pub struct Step {
     pub op: String,
     pub left: Option<Token>,
     pub right: Token,
-    pub result: Token
+    pub result: Token,
 }
 
 impl Step {
@@ -18,7 +18,7 @@ impl Step {
             op: op.to_string(),
             left: None,
             right,
-            result
+            result,
         }
     }
 
@@ -27,7 +27,7 @@ impl Step {
             op: op.to_string(),
             left: Some(left),
             right,
-            result
+            result,
         }
     }
 }
@@ -35,7 +35,11 @@ impl Step {
 impl Display for Step {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match &self.left {
-            Some(left) => write!(f, "{} {} {} = {}", left.text, self.op, self.right.text, self.result.text),
+            Some(left) => write!(
+                f,
+                "{} {} {} = {}",
+                left.text, self.op, self.right.text, self.result.text
+            ),
             None => write!(f, "{}{} = {}", self.op, self.right.text, self.result.text),
         }
     }
