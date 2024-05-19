@@ -16,7 +16,7 @@
 
 <div>
 
-    <div class="font-mono">
+    <div class="font-mono overflow-hidden">
         {#each evaluation.command as token}
             <TokenDisplay token={token} highlight={highlight} canHighlight={evaluation.steps.length} commandChannel={commandChannel}/>
         {/each}
