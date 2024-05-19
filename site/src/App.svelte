@@ -20,9 +20,9 @@
     function evaluateCommand(command) {
         if (command === "") {
             return;
-        } else if (command === "info") {
+        } else if (command === "info" || command === "help") {
             let panelData = {
-                flavor: "info",
+                flavor: command,
                 index: counter
             }
             panels.push(panelData);
