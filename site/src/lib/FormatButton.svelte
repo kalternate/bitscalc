@@ -9,7 +9,7 @@
 </script>
 
 {#if format === myFormat}
-    <button on:click={onClick} class="font-mono underline text-sm">
+    <button on:click={onClick} class="font-mono text-sm">
         <slot/>
     </button>
 {:else}

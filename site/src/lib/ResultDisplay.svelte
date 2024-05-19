@@ -1,15 +1,12 @@
 <script>
-    import { fade } from 'svelte/transition';
     import StepDisplay from './StepDisplay.svelte';
     import TokenDisplay from './TokenDisplay.svelte';
     import { writable } from 'svelte/store';
     import FormatButton from './FormatButton.svelte';
 
     export let evaluation;
-    export let commandChannel;
     
     let highlight = writable(0);
-    let formatChannel = writable("dec");
     let format = "dec";
     
 </script>
@@ -18,7 +15,7 @@
 
     <div class="font-mono overflow-hidden">
         {#each evaluation.command as token}
-            <TokenDisplay token={token} highlight={highlight} canHighlight={evaluation.steps.length} commandChannel={commandChannel}/>
+            <TokenDisplay token={token} highlight={highlight} canHighlight={evaluation.steps.length}/>
         {/each}
     </div>
 
@@ -36,7 +33,7 @@
                 <div class="flex-shrink">
                     {#each evaluation.steps as step}
                     <div class="flex justify-end flex-grow">
-                        <StepDisplay step={step} highlight={highlight}  commandChannel={commandChannel} format={format}/>
+                        <StepDisplay step={step} highlight={highlight} format={format}/>
                     </div>
                     {/each}
                 </div>

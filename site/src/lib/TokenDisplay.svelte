@@ -1,7 +1,6 @@
 <script>
     export let token;
     export let highlight;
-    export let commandChannel = null;
     export let format = "";
     export let canHighlight = true;
 
@@ -44,18 +43,14 @@
         }
     }
 
-    function onClick() {
-        commandChannel.set(token.text)
-    }
-
 </script>
 
 {#if token.tag && canHighlight}
-    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit} on:click={onClick} class="decoration-zinc-600 hover:decoration-sky-300 underline">
+    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit} class=" hover:decoration-sky-300">
         {#if highlightNow}
             <span class="font-mono text-sky-300">{display}</span>
         {:else}
-            <span class="font-mono hover:text-sky-300">{display}</span>
+            <span class="font-mono underline decoration-zinc-600">{display}</span>
         {/if}
     </span>
 {:else}

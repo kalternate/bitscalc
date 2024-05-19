@@ -69,7 +69,7 @@
         <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
             {#each panels as panelData (panelData.index)}
                 <div animate:flip={{ delay: 0, duration: 250}}>
-                    <Panel panelData={panelData} commandChannel={commandChannel}/>
+                    <Panel panelData={panelData}/>
                 </div>
             {/each}
 
