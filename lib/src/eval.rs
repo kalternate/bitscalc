@@ -170,11 +170,21 @@ fn evaluate_exprs(
         steps,
         &mut tag_counter,
         &[
-            (">", |a, b| if a > b { 1 } else { 0 }), 
-            ("<", |a, b| if a < b { 1 } else { 0 }), 
-            (">=", |a, b| if a >= b { 1 } else { 0 }), 
-            ("<=", |a, b| if a <= b { 1 } else { 0 }), 
-            ],
+            (">", |a, b| if a > b { 1 } else { 0 }),
+            ("<", |a, b| if a < b { 1 } else { 0 }),
+            (">=", |a, b| if a >= b { 1 } else { 0 }),
+            ("<=", |a, b| if a <= b { 1 } else { 0 }),
+        ],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[
+            ("==", |a, b| if a == b { 1 } else { 0 }),
+            ("!=", |a, b| if a != b { 1 } else { 0 }),
+        ],
     );
 
     exprs = evaluate_binary_op(
@@ -187,6 +197,27 @@ fn evaluate_exprs(
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", i64::bitand)]);
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^", i64::bitxor)]);
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("|", i64::bitor)]);
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("&&", |a, b| if (a != 0) & (b != 0) { 1 } else { 0 })],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("^^", |a, b| if (a != 0) ^ (b != 0) { 1 } else { 0 })],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("||", |a, b| if (a != 0) | (b != 0) { 1 } else { 0 })],
+    );
 
     if exprs.len() != 1 {
         Err(Error(format!(
