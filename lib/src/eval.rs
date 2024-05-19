@@ -169,6 +169,16 @@ fn evaluate_exprs(
         exprs,
         steps,
         &mut tag_counter,
+        &[
+            (">", |a, b| if a > b { 1 } else { 0 }), 
+            ("<", |a, b| if a < b { 1 } else { 0 }), 
+            ],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
         &[("<<", i64::shl), (">>", i64::shr)],
     );
 
