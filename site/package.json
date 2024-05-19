@@ -1,5 +1,5 @@
 {
-  "name": "bitscalcsite",
+  "name": "bitscalc",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -11,7 +11,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "autoprefixer": "^10.4.19",
-    "bitscalclib": "../bitscalclib/pkg",
+    "bitscalclib": "../lib/pkg",
     "postcss": "^8.4.38",
     "svelte": "^4.2.12",
     "tailwindcss": "^3.4.3",
