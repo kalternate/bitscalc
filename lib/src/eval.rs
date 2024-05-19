@@ -172,6 +172,8 @@ fn evaluate_exprs(
         &[
             (">", |a, b| if a > b { 1 } else { 0 }), 
             ("<", |a, b| if a < b { 1 } else { 0 }), 
+            (">=", |a, b| if a >= b { 1 } else { 0 }), 
+            ("<=", |a, b| if a <= b { 1 } else { 0 }), 
             ],
     );
 

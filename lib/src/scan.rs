@@ -40,18 +40,26 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
                 ')' => tokens.push(Expr::ParenClose),
 
                 '>' => {
-                    if chars.get(start + 1).is_some_and(|n| *n == '>') {
+                    let next = chars.get(start + 1);
+                    if next.is_some_and(|n| *n == '>') {
                         start += 1;
                         tokens.push(Expr::Op(">>"))
+                    } else if next.is_some_and(|n| *n == '=') {
+                        start += 1;
+                        tokens.push(Expr::Op(">="))
                     } else {
                         tokens.push(Expr::Op(">"))
                     }
                 }
 
                 '<' => {
-                    if chars.get(start + 1).is_some_and(|n| *n == '<') {
+                    let next = chars.get(start + 1);
+                    if next.is_some_and(|n| *n == '<') {
                         start += 1;
                         tokens.push(Expr::Op("<<"))
+                    } else if next.is_some_and(|n| *n == '=') {
+                        start += 1;
+                        tokens.push(Expr::Op("<="))
                     } else {
                         tokens.push(Expr::Op("<"))
                     }
