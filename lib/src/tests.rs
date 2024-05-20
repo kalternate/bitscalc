@@ -5,6 +5,12 @@ use crate::evaluate;
 
 #[test]
 #[wasm_bindgen_test]
+fn negative() {
+    assert_eq!(test_eval("-1"), -1);
+}
+
+#[test]
+#[wasm_bindgen_test]
 fn add() {
     assert_eq!(test_eval("1+2"), 3);
     assert_eq!(test_eval("1+2+3"), 6);

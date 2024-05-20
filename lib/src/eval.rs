@@ -303,19 +303,29 @@ fn evaluate_unary_op(
                             }
 
                             exprs.pop_back();
-                            let result_num = op_fn(operand_num);
 
-                            let result_tok = Token {
-                                text: result_num.to_string(),
-                                tag: Some(*tag_counter),
-                                format: Some(FormattedValue::from_i64(result_num)),
-                            };
+                            if cur_symbol == "-" {
+                                let neg_operand_num = -operand_num;
+                                let neg_operand_tok = Token {
+                                    text: format!("{}", neg_operand_num),
+                                    tag: operand_tok.tag,
+                                    format: Some(FormattedValue::from_i64(neg_operand_num)),
+                                };
 
-                            *tag_counter += 1;
+                                exprs.push_back(Expr::NumberToken(neg_operand_num, neg_operand_tok));
+                            } else {
 
-                            exprs.push_back(Expr::NumberToken(result_num, result_tok.clone()));
+                                let result_num = op_fn(operand_num);
+                                let result_tok = Token {
+                                    text: result_num.to_string(),
+                                    tag: Some(*tag_counter),
+                                    format: Some(FormattedValue::from_i64(result_num)),
+                                };
 
-                            if cur_symbol != "-" {
+                                *tag_counter += 1;
+
+                                exprs.push_back(Expr::NumberToken(result_num, result_tok.clone()));
+
                                 steps.push(Step::unary(symbol, operand_tok, result_tok));
                             }
 
