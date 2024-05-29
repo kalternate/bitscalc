@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::{Expr, FormattedValue};
+use crate::{Expr, FormattedValue, Value};
 
 #[derive(Debug, Serialize, Clone)]
 pub struct Token {
@@ -9,8 +9,8 @@ pub struct Token {
     pub format: Option<FormattedValue>,
 }
 
-impl From<Expr> for Token {
-    fn from(expr: Expr) -> Self {
+impl<V: Value> From<Expr<V>> for Token {
+    fn from(expr: Expr<V>) -> Self {
         match expr {
             Expr::Op(op) => Token {
                 text: op.into(),

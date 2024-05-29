@@ -1,4 +1,4 @@
-use bitscalclib::evaluate;
+use bitscalclib::{evaluate, Evaluation};
 use console::Term;
 use std::io::Write;
 
@@ -11,7 +11,7 @@ fn main() -> Result<(), std::io::Error> {
 
         while let Ok(input) = terminal.read_line() {
            
-            let eval = evaluate(&input);
+            let eval: Evaluation<isize> = evaluate(&input);
 
             if let Some(result) = eval.token.map(|t| t.format).flatten() {
                 for step in eval.steps {

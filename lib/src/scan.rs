@@ -1,6 +1,6 @@
-use crate::{Error, Expr, FormattedValue, Token};
+use crate::{Error, Expr, FormattedValue, Token, Value};
 
-pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
+pub fn scan<V: Value>(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr<V>>, Error> {
     let chars: Vec<char> = cmd.chars().collect();
     let mut start = 0;
     let mut tokens = Vec::new();
@@ -17,7 +17,7 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
             let token = Token {
                 text: token_str,
                 tag: Some(*tag_counter),
-                format: Some(FormattedValue::from_i64(number)),
+                format: Some(FormattedValue::from_value(number)),
             };
 
             *tag_counter += 1;
@@ -107,17 +107,17 @@ pub fn scan(cmd: &str, tag_counter: &mut usize) -> Result<Vec<Expr>, Error> {
     Ok(tokens)
 }
 
-fn parse_numeric(token: &str) -> Result<i64, Error> {
+fn parse_numeric<V: Value>(token: &str) -> Result<V, Error> {
     if token.len() < 3 {
-        i64::from_str_radix(token, 10)
+        V::from_str_radix(token, 10)
     } else {
         let (prefix, suffix) = token.split_at(2);
         if prefix == "0x" {
-            i64::from_str_radix(suffix, 16)
+            V::from_str_radix(suffix, 16)
         } else if prefix == "0b" {
-            i64::from_str_radix(suffix, 2)
+            V::from_str_radix(suffix, 2)
         } else {
-            i64::from_str_radix(token, 10)
+            V::from_str_radix(token, 10)
         }
     }
     .map_err(|_| Error(format!("error: cannot parse '{}'", token)))

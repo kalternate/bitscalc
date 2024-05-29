@@ -1,15 +1,4 @@
 use std::collections::VecDeque;
-use std::ops::Add;
-use std::ops::BitAnd;
-use std::ops::BitOr;
-use std::ops::BitXor;
-use std::ops::Div;
-use std::ops::Mul;
-use std::ops::Neg;
-use std::ops::Not;
-use std::ops::Shl;
-use std::ops::Shr;
-use std::ops::Sub;
 
 use serde::Serialize;
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -18,18 +7,19 @@ use crate::scan;
 use crate::FormattedValue;
 use crate::Step;
 use crate::Token;
+use crate::Value;
 use crate::{Error, Expr};
 
 #[derive(Debug, Serialize)]
-pub struct Evaluation {
+pub struct Evaluation<V> {
     pub command: Option<Vec<Token>>,
     pub steps: Vec<Step>,
-    pub result: Option<i64>,
+    pub result: Option<V>,
     pub token: Option<Token>,
     pub error: Option<String>,
 }
 
-pub fn evaluate(command: &str) -> Evaluation {
+pub fn evaluate<V: Value>(command: &str) -> Evaluation<V> {
     macro_rules! eval_error {
         ($err:expr) => {
             Evaluation {
@@ -73,7 +63,7 @@ pub fn evaluate(command: &str) -> Evaluation {
 
 #[wasm_bindgen]
 pub fn evaluatetojson(command: &str) -> String {
-    let eval = evaluate(command);
+    let eval: Evaluation<i64> = evaluate(command);
 
     match serde_json::to_string(&eval) {
         Ok(json) => json,
@@ -85,11 +75,11 @@ pub fn evaluatetojson(command: &str) -> String {
     }
 }
 
-fn evaluate_exprs(
-    expressions: &[Expr],
+fn evaluate_exprs<V: Value>(
+    expressions: &[Expr<V>],
     steps: &mut Vec<Step>,
     mut tag_counter: &mut usize,
-) -> Result<Expr, Error> {
+) -> Result<Expr<V>, Error> {
     let mut index = 0;
     let mut exprs = VecDeque::new();
 
@@ -145,35 +135,9 @@ fn evaluate_exprs(
         steps,
         &mut tag_counter,
         &[
-            ("~", i64::not),
-            ("-", i64::neg),
-            ("!", |v| if v == 0 { 1 } else { 0 }),
-        ],
-    );
-
-    exprs = evaluate_binary_op(
-        exprs,
-        steps,
-        &mut tag_counter,
-        &[("*", i64::mul), ("/", i64::div), ("%", i64::rem_euclid)],
-    );
-
-    exprs = evaluate_binary_op(
-        exprs,
-        steps,
-        &mut tag_counter,
-        &[("+", i64::add), ("-", i64::sub)],
-    );
-
-    exprs = evaluate_binary_op(
-        exprs,
-        steps,
-        &mut tag_counter,
-        &[
-            (">", |a, b| if a > b { 1 } else { 0 }),
-            ("<", |a, b| if a < b { 1 } else { 0 }),
-            (">=", |a, b| if a >= b { 1 } else { 0 }),
-            ("<=", |a, b| if a <= b { 1 } else { 0 }),
+            ("~", V::bitwise_not),
+            ("-", V::negative),
+            ("!", V::logical_not),
         ],
     );
 
@@ -182,8 +146,9 @@ fn evaluate_exprs(
         steps,
         &mut tag_counter,
         &[
-            ("==", |a, b| if a == b { 1 } else { 0 }),
-            ("!=", |a, b| if a != b { 1 } else { 0 }),
+            ("*", V::multiplication),
+            ("/", V::division),
+            ("%", V::remainder),
         ],
     );
 
@@ -191,33 +156,44 @@ fn evaluate_exprs(
         exprs,
         steps,
         &mut tag_counter,
-        &[("<<", i64::shl), (">>", i64::shr)],
-    );
-
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", i64::bitand)]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^", i64::bitxor)]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("|", i64::bitor)]);
-
-    exprs = evaluate_binary_op(
-        exprs,
-        steps,
-        &mut tag_counter,
-        &[("&&", |a, b| if (a != 0) & (b != 0) { 1 } else { 0 })],
+        &[("+", V::addition), ("-", V::subtraction)],
     );
 
     exprs = evaluate_binary_op(
         exprs,
         steps,
         &mut tag_counter,
-        &[("^^", |a, b| if (a != 0) ^ (b != 0) { 1 } else { 0 })],
+        &[
+            (">", V::greater_than),
+            ("<", V::less_than),
+            (">=", V::greater_than_or_equal),
+            ("<=", V::less_than_or_equal),
+        ],
     );
 
     exprs = evaluate_binary_op(
         exprs,
         steps,
         &mut tag_counter,
-        &[("||", |a, b| if (a != 0) | (b != 0) { 1 } else { 0 })],
+        &[("==", V::equals), ("!=", V::not_equals)],
     );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
+        &[("<<", V::left_bitshift), (">>", V::right_bitshift)],
+    );
+
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", V::bitwise_and)]);
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^", V::bitwise_xor)]);
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("|", V::bitwise_or)]);
+
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&&", V::logical_and)]);
+
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^^", V::logical_xor)]);
+
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("||", V::logical_or)]);
 
     if exprs.len() != 1 {
         Err(Error(format!(
@@ -234,12 +210,12 @@ fn evaluate_exprs(
     }
 }
 
-fn evaluate_binary_op(
-    mut exprs: VecDeque<Expr>,
+fn evaluate_binary_op<V: Value>(
+    mut exprs: VecDeque<Expr<V>>,
     steps: &mut Vec<Step>,
     tag_counter: &mut usize,
-    op_table: &[(&'static str, fn(i64, i64) -> i64)],
-) -> VecDeque<Expr> {
+    op_table: &[(&'static str, fn(V, V) -> V)],
+) -> VecDeque<Expr<V>> {
     let mut results = VecDeque::new();
 
     while let Some(expr) = exprs.pop_front() {
@@ -257,7 +233,7 @@ fn evaluate_binary_op(
                             let result_tok = Token {
                                 text: result_num.to_string(),
                                 tag: Some(*tag_counter),
-                                format: Some(FormattedValue::from_i64(result_num)),
+                                format: Some(FormattedValue::from_value(result_num)),
                             };
 
                             *tag_counter += 1;
@@ -280,12 +256,12 @@ fn evaluate_binary_op(
     results
 }
 
-fn evaluate_unary_op(
-    mut exprs: VecDeque<Expr>,
+fn evaluate_unary_op<V: Value>(
+    mut exprs: VecDeque<Expr<V>>,
     steps: &mut Vec<Step>,
     tag_counter: &mut usize,
-    op_table: &[(&'static str, fn(i64) -> i64)],
-) -> VecDeque<Expr> {
+    op_table: &[(&'static str, fn(V) -> V)],
+) -> VecDeque<Expr<V>> {
     let mut results = VecDeque::new();
 
     while let Some(expr) = exprs.pop_back() {
@@ -305,21 +281,21 @@ fn evaluate_unary_op(
                             exprs.pop_back();
 
                             if cur_symbol == "-" {
-                                let neg_operand_num = -operand_num;
+                                let neg_operand_num = operand_num.negative();
                                 let neg_operand_tok = Token {
                                     text: format!("{}", neg_operand_num),
                                     tag: operand_tok.tag,
-                                    format: Some(FormattedValue::from_i64(neg_operand_num)),
+                                    format: Some(FormattedValue::from_value(neg_operand_num)),
                                 };
 
-                                exprs.push_back(Expr::NumberToken(neg_operand_num, neg_operand_tok));
+                                exprs
+                                    .push_back(Expr::NumberToken(neg_operand_num, neg_operand_tok));
                             } else {
-
                                 let result_num = op_fn(operand_num);
                                 let result_tok = Token {
                                     text: result_num.to_string(),
                                     tag: Some(*tag_counter),
-                                    format: Some(FormattedValue::from_i64(result_num)),
+                                    format: Some(FormattedValue::from_value(result_num)),
                                 };
 
                                 *tag_counter += 1;
