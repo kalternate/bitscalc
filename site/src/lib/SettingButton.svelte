@@ -1,0 +1,25 @@
+<script>
+
+    export let buttonChannel;
+
+
+    export let pressed = false;
+    export let value;
+
+    if (pressed) {
+        buttonChannel.set(value);
+    }
+
+    buttonChannel.subscribe(v => {pressed = v == value})
+
+</script>
+
+{#if pressed}
+<button disabled={true} class="font-mono text-center center" >
+    <slot/>
+</button>
+{:else}
+<button class="font-mono underline text-zinc-400 hover:text-sky-300" on:click={buttonChannel.set(value)}>
+    <slot/>
+</button>
+{/if}

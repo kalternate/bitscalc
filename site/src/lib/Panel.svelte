@@ -4,6 +4,7 @@
     import ResultDisplay from "./ResultDisplay.svelte";
 
     export let panelData;
+    export let commandChannel;
 
 </script>
 
@@ -17,10 +18,14 @@
             Bitscalc is a binary integer calculator for quickly evaluating programming expressions. It supports arithmetic, logical, and bitwise operators with C-like precedence. Step-by-step results are shown in decimal, hexadecimal, and binary. Enter an expression above to get started.
         </div>
         <div class="font-mono mt-2 text-zinc-400">
-            v1.1 —
+            v1.1 
+            —
+            <button on:click={commandChannel.set("help")} class="underline hover:text-sky-300">
+                help
+            </button> 
             <a href="https://github.com/kalternate/bitscalc" class="underline hover:text-sky-300">
                 source
-            </a>
+            </a> 
         </div>
     {:else if panelData.flavor === "help"}
         <div class="font-mono font-bold">
@@ -79,7 +84,7 @@
                 </tr>
             </table>
             <div class="font-mono">
-                Enter an expression to get started. Supported operations organized by precedence are listed in the preceding table. This is an integer calculator and non-integer value are not supported. This calculator is designed to mimic the behavior of C. Remainders are dropped from division operations. Bitwise operations preform logical operations on likewise bits of the integers. Logical operations treat 0 as a false and any other number as true. Operations that result in boolean values return 1 if true and 0 if false. 
+                Enter an expression to get started. Listed operations are organized by precedence. Non-integer value are not supported. Operations largely  mimic the behavior of C. Remainders are dropped from division. Bitwise operations preform logical operations on likewise bits of the integers. Logical operations treat 0 as a false and any other number as true. Operations that result in boolean values return 1 if true and 0 if false. 
             </div>
         </div>
     {/if}

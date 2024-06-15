@@ -5,12 +5,16 @@
     import { flip } from 'svelte/animate';
     import { writable } from 'svelte/store';    
     import Panel from './lib/Panel.svelte';
+    import SettingButton from './lib/SettingButton.svelte';
     init();
 
     let userInput = '';
     let panels = []
     let counter = 0;
     let error = '';
+
+    let signed = true;
+    let size = 64;
 
     let commandChannel = writable("");
 
@@ -29,7 +33,7 @@
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            let evalJson = evaluatetojson(command);
+            let evalJson = evaluatetojson(command, signed, BigInt(size));
             let evaluation = JSON.parse(evalJson);
 
             if (evaluation.token) {
@@ -58,6 +62,12 @@
         }
     }
 
+    let signedChannel = writable(true);
+    let sizeChannel = writable(64);
+
+    signedChannel.subscribe(v => signed = v);
+    sizeChannel.subscribe(v => size = v);
+
 </script>
 
 <main class="flex flex-grow flex-col">
@@ -66,16 +76,30 @@
     </div>
 
     <div class="flex justify-center">
-        <div class="flex flex-grow flex-col-reverse justify-center justify-items-center max-w-[64rem]">
-            {#each panels as panelData (panelData.index)}
-                <div animate:flip={{ delay: 0, duration: 250}}>
-                    <Panel panelData={panelData}/>
+        <div class="flex flex-grow flex-col justify-center justify-items-center max-w-[64rem]">
+            <div class="flex flex-row gap-2 align-middle mt-1">
+                <SettingButton buttonChannel={signedChannel} value={true}>signed</SettingButton>
+                <SettingButton buttonChannel={signedChannel} value={false}>unsigned</SettingButton>
+                <div>
+                —
                 </div>
-            {/each}
+                <SettingButton buttonChannel={sizeChannel} value={64}>64-bit</SettingButton>
+                <SettingButton buttonChannel={sizeChannel} value={32}>32-bit</SettingButton>
+                <SettingButton buttonChannel={sizeChannel} value={16}>16-bit</SettingButton>
+                <SettingButton buttonChannel={sizeChannel} value={8}>8-bit</SettingButton>
+            </div>
 
             {#if error}
                 <div class="text-red-400 mx-1" in:fade={{ delay: 0, duration: 250 }}>{error}</div>
             {/if}
+
+            <div class="flex flex-grow flex-col-reverse">
+                {#each panels as panelData (panelData.index)}
+                <div animate:flip={{ delay: 0, duration: 250}}>
+                    <Panel panelData={panelData} commandChannel={commandChannel}/>
+                </div>
+                {/each}
+            </div>
         </div>
     </div>
     

@@ -62,16 +62,60 @@ pub fn evaluate<V: Value>(command: &str) -> Evaluation<V> {
 }
 
 #[wasm_bindgen]
-pub fn evaluatetojson(command: &str) -> String {
-    let eval: Evaluation<i64> = evaluate(command);
+pub fn evaluatetojson(command: &str, signed: bool, size: i64) -> String {
 
-    match serde_json::to_string(&eval) {
-        Ok(json) => json,
-        Err(e) => format!(
-            "{{\"command\":\"{}\",\"error\":\"error: {}\",\"steps\":[]}}",
-            command,
-            e.to_string()
-        ),
+    macro_rules! handle_eval {
+        ($eval:expr) => {
+            match serde_json::to_string(&$eval) {
+                Ok(json) => json,
+                Err(e) => format!(
+                    "{{\"command\":\"{}\",\"error\":\"error: {}\",\"steps\":[]}}",
+                    command,
+                    e.to_string()
+                ),
+            }
+        };
+    }
+
+    match size {
+        64 => {
+            if signed {
+                handle_eval!(evaluate::<i64>(command))
+            } else {
+                handle_eval!(evaluate::<u64>(command))
+            }
+        },
+
+        32 => {
+            if signed {
+                handle_eval!(evaluate::<i32>(command))
+            } else {
+                handle_eval!(evaluate::<u32>(command))
+            }
+        },
+
+        16 => {
+            if signed {
+                handle_eval!(evaluate::<i16>(command))
+            } else {
+                handle_eval!(evaluate::<u16>(command))
+            }
+        },
+
+        8 => {
+            if signed {
+                handle_eval!(evaluate::<i8>(command))
+            } else {
+                handle_eval!(evaluate::<u8>(command))
+            }
+        },
+
+        _ => {
+            format!(
+                "{{\"command\":\"{}\",\"error\":\"error: invalid size\",\"steps\":[]}}",
+                command
+            )
+        }
     }
 }
 
@@ -163,6 +207,13 @@ fn evaluate_exprs<V: Value>(
         exprs,
         steps,
         &mut tag_counter,
+        &[("<<", V::left_bitshift), (">>", V::right_bitshift)],
+    );
+
+    exprs = evaluate_binary_op(
+        exprs,
+        steps,
+        &mut tag_counter,
         &[
             (">", V::greater_than),
             ("<", V::less_than),
@@ -176,13 +227,6 @@ fn evaluate_exprs<V: Value>(
         steps,
         &mut tag_counter,
         &[("==", V::equals), ("!=", V::not_equals)],
-    );
-
-    exprs = evaluate_binary_op(
-        exprs,
-        steps,
-        &mut tag_counter,
-        &[("<<", V::left_bitshift), (">>", V::right_bitshift)],
     );
 
     exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", V::bitwise_and)]);
