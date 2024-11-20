@@ -15,11 +15,11 @@
 </script>
 
 {#if pressed}
-<button disabled={true} class="font-mono text-center center" >
+<button disabled={true} class="font-mono text-center center text-emerald-300" >
     <slot/>
 </button>
 {:else}
-<button class="font-mono underline text-zinc-400 hover:text-sky-300" on:click={buttonChannel.set(value)}>
+<button class="font-mono underline text-zinc-400" on:click={buttonChannel.set(value)}>
     <slot/>
 </button>
 {/if}

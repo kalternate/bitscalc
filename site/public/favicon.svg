@@ -2,46 +2,97 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="32"
-   height="32"
-   viewBox="0 0 32 32"
+   width="32.0px"
+   height="32.0px"
+   viewBox="0 0 32.0 32.0"
    version="1.1"
-   id="svg1"
-   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25, custom)"
+   id="SVGRoot"
    sodipodi:docname="favicon.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#505050"
-     bordercolor="#ffffff"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="1"
+     id="namedview14"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="18.981398"
-     inkscape:cx="30.345499"
-     inkscape:cy="16.226413"
+     showgrid="true"
+     inkscape:zoom="17.658147"
+     inkscape:cx="15.375339"
+     inkscape:cy="13.902931"
      inkscape:window-width="1920"
-     inkscape:window-height="1023"
+     inkscape:window-height="1030"
      inkscape:window-x="1920"
-     inkscape:window-y="0"
+     inkscape:window-y="26"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid20" />
+  </sodipodi:namedview>
   <defs
-     id="defs1" />
+     id="defs9">
+    <rect
+       x="-16"
+       y="3"
+       width="57.355469"
+       height="30.382812"
+       id="rect442" />
+    <rect
+       x="4"
+       y="4"
+       width="12"
+       height="19"
+       id="rect384" />
+    <rect
+       x="-16"
+       y="3"
+       width="57.355469"
+       height="30.382812"
+       id="rect442-6" />
+  </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <path
-       style="font-size:32px;font-family:Instruction;-inkscape-font-specification:Instruction;text-align:center;letter-spacing:-3px;text-anchor:middle;fill:#e4e4e7"
-       d="M 9.296875,27.71875 H 1.875 q -0.640625,0 -1.109375,-0.453125 Q 0.3125,26.796875 0.3125,26.15625 V 5.84375 Q 0.3125,5.203125 0.765625,4.75 1.234375,4.28125 1.875,4.28125 h 7.421875 q 2.75,0 4.6875,1.953125 1.953125,1.9375 1.953125,4.6875 0,2.75 -1.9375,4.6875 Q 13.796875,15.8125 13.578125,16 13.796875,16.1875 14,16.375 q 1.9375,1.953125 1.9375,4.703125 0,2.75 -1.953125,4.703125 -1.9375,1.9375 -4.6875,1.9375 z m 0,-20.3125 H 3.4375 v 7.03125 h 5.859375 q 1.453125,0 2.484375,-1.03125 Q 12.8125,12.375 12.8125,10.921875 12.8125,9.46875 11.78125,8.4375 10.75,7.40625 9.296875,7.40625 Z m 0,10.15625 H 3.4375 v 7.03125 h 5.859375 q 1.453125,0 2.484375,-1.03125 1.03125,-1.03125 1.03125,-2.484375 0,-1.453125 -1.03125,-2.484375 Q 10.75,17.5625 9.296875,17.5625 Z M 28.5625,19.90625 q 0,-0.640625 0.453125,-1.09375 0.46875,-0.46875 1.109375,-0.46875 0.640625,0 1.09375,0.46875 0.46875,0.453125 0.46875,1.09375 0,3.234375 -2.296875,5.53125 -2.28125,2.28125 -5.515625,2.28125 -3.234375,0 -5.53125,-2.28125 -2.28125,-2.296875 -2.28125,-5.53125 v -7.8125 q 0,-3.234375 2.28125,-5.515625 2.296875,-2.296875 5.53125,-2.296875 3.234375,0 5.515625,2.296875 2.296875,2.28125 2.296875,5.515625 0,0.640625 -0.46875,1.109375 -0.453125,0.453125 -1.09375,0.453125 -0.640625,0 -1.109375,-0.453125 -0.453125,-0.46875 -0.453125,-1.109375 0,-1.9375 -1.375,-3.3125 -1.375,-1.375 -3.3125,-1.375 -1.9375,0 -3.3125,1.375 -1.375,1.375 -1.375,3.3125 v 7.8125 q 0,1.9375 1.375,3.3125 1.375,1.375 3.3125,1.375 1.9375,0 3.3125,-1.375 1.375,-1.375 1.375,-3.3125 z"
-       id="text1"
-       aria-label="BC" />
+    <rect
+       style="fill:#27272a;fill-opacity:1;stroke-width:1.94029"
+       id="rect328"
+       width="32"
+       height="32"
+       x="8.8817842e-16"
+       y="8.8817842e-16"
+       ry="5.647059" />
+    <text
+       xml:space="preserve"
+       id="text382"
+       style="font-weight:bold;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect384);display:inline;fill:#ffffff" />
+    <text
+       xml:space="preserve"
+       id="text440"
+       style="font-weight:bold;font-size:18.6667px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect442);display:inline;fill:#6ee7b7;fill-opacity:1"
+       transform="matrix(1.27001,0,0,1.27001,-6.6008448,-3.5492541)"><tspan
+         x="7.0777207"
+         y="19.757606"
+         id="tspan1241"><tspan
+           style="font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono Bold'"
+           id="tspan1239">0</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       id="text440-1"
+       style="font-weight:bold;font-size:18.6667px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect442-6);display:inline;fill:#6ee7b7;fill-opacity:1"
+       transform="matrix(1.1422459,0,0,1.2343614,8.1457797,4.4322355)"><tspan
+         x="7.0777207"
+         y="19.757606"
+         id="tspan1245"><tspan
+           style="font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono Bold'"
+           id="tspan1243">1</tspan></tspan></text>
   </g>
 </svg>

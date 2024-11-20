@@ -72,12 +72,12 @@
 
 <main class="flex flex-grow flex-col">
     <div class=" flex flex-grow justify-center">
-        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-sky-300 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={userInput} on:keydown={handleKeydown}/>
+        <input class="text-md bg-zinc-800 border-zinc-700 rounded-xl p-2 font-mono border-2 focus:outline-none focus:ring-0  focus:border-green-300 transition-colors placeholder:text-zinc-500 flex-grow max-w-[64rem] shadow-md" placeholder="enter an expression..." bind:value={userInput} on:keydown={handleKeydown}/>
     </div>
 
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col justify-center justify-items-center max-w-[64rem]">
-            <div class="flex flex-row gap-2 align-middle mt-1">
+            <div class="flex flex-row gap-2 mt-1">
                 <SettingButton buttonChannel={signedChannel} value={true}>signed</SettingButton>
                 <SettingButton buttonChannel={signedChannel} value={false}>unsigned</SettingButton>
                 <div>

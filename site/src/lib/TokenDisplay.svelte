@@ -46,16 +46,16 @@
 </script>
 
 {#if token.tag && canHighlight}
-    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit} class=" hover:decoration-sky-300">
+    <span on:mouseenter={mouseEnter} on:mouseleave={mouseExit}>
         {#if highlightNow}
-            <span class="font-mono text-sky-300">{display}</span>
+            <span class="font-mono text-pink-300">{display}</span>
         {:else}
             <span class="font-mono underline decoration-zinc-600">{display}</span>
         {/if}
     </span>
 {:else}
     {#if highlightNow}
-            <span class="font-mono text-sky-300">{display}</span>
+            <span class="font-mono text-pink-300">{display}</span>
     {:else}
         <span class="font-mono">{display}</span>
     {/if}

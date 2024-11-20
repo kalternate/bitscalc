@@ -13,7 +13,7 @@
         <slot/>
     </button>
 {:else}
-    <button on:click={onClick} class="font-mono hover:text-sky-300 underline text-sm text-zinc-400">
+    <button on:click={onClick} class="font-mono underline text-sm text-zinc-400">
         <slot/>
     </button>
 {/if}
