@@ -25,13 +25,13 @@
      inkscape:document-units="px"
      showgrid="true"
      inkscape:zoom="17.658147"
-     inkscape:cx="15.375339"
+     inkscape:cx="15.403655"
      inkscape:cy="13.902931"
-     inkscape:window-width="1920"
-     inkscape:window-height="1030"
-     inkscape:window-x="1920"
-     inkscape:window-y="26"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1447"
+     inkscape:window-height="1080"
+     inkscape:window-x="2327"
+     inkscape:window-y="127"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1">
     <inkscape:grid
        type="xygrid"
@@ -74,25 +74,25 @@
        xml:space="preserve"
        id="text382"
        style="font-weight:bold;font-size:16px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect384);display:inline;fill:#ffffff" />
-    <text
-       xml:space="preserve"
+    <g
+       aria-label="0"
+       transform="matrix(1.27001,0,0,1.27001,-6.6008448,-3.5492541)"
        id="text440"
-       style="font-weight:bold;font-size:18.6667px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect442);display:inline;fill:#6ee7b7;fill-opacity:1"
-       transform="matrix(1.27001,0,0,1.27001,-6.6008448,-3.5492541)"><tspan
-         x="7.0777207"
-         y="19.757606"
-         id="tspan1241"><tspan
-           style="font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono Bold'"
-           id="tspan1239">0</tspan></tspan></text>
-    <text
-       xml:space="preserve"
+       style="font-weight:bold;font-size:18.6667px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect442);display:inline;fill:#6ee7b7">
+      <path
+         d="m 12.677731,19.944273 q -1.325336,0 -2.296004,-0.504001 Q 9.4110583,18.936271 8.8697239,18.021603 8.3470563,17.106935 8.3470563,15.874932 v -5.861344 q 0,-1.2320018 0.5226676,-2.1466701 0.5413344,-0.9146683 1.5120031,-1.4186693 0.970668,-0.5040009 2.296004,-0.5040009 1.325336,0 2.296004,0.5040009 0.970668,0.504001 1.493336,1.4186693 0.541334,0.9146683 0.541334,2.1466701 v 5.861344 q 0,1.232003 -0.541334,2.146671 -0.522668,0.914668 -1.493336,1.418669 -0.970668,0.504001 -2.296004,0.504001 z m 0,-2.016004 q 0.970668,0 1.549336,-0.560001 0.578668,-0.560001 0.578668,-1.493336 v -5.861344 q 0,-0.9333346 -0.578668,-1.4933356 -0.560001,-0.560001 -1.549336,-0.560001 -0.989335,0 -1.568003,0.560001 -0.560001,0.560001 -0.560001,1.4933356 v 5.861344 q 0,0.933335 0.578668,1.493336 0.578667,0.560001 1.549336,0.560001 z m 0,-3.770673 q -0.560001,0 -0.896002,-0.354667 -0.336,-0.354668 -0.336,-0.914669 0,-0.560001 0.336,-0.896001 0.336001,-0.336001 0.896002,-0.336001 0.560001,0 0.896001,0.336001 0.336001,0.336 0.336001,0.896001 0,0.560001 -0.336001,0.914669 -0.336,0.354667 -0.896001,0.354667 z"
+         style="font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono Bold'"
+         id="path2699" />
+    </g>
+    <g
+       aria-label="1"
+       transform="matrix(1.1422459,0,0,1.2343614,8.1457797,4.4322355)"
        id="text440-1"
-       style="font-weight:bold;font-size:18.6667px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect442-6);display:inline;fill:#6ee7b7;fill-opacity:1"
-       transform="matrix(1.1422459,0,0,1.2343614,8.1457797,4.4322355)"><tspan
-         x="7.0777207"
-         y="19.757606"
-         id="tspan1245"><tspan
-           style="font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono Bold'"
-           id="tspan1243">1</tspan></tspan></text>
+       style="font-weight:bold;font-size:18.6667px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';text-align:center;white-space:pre;shape-inside:url(#rect442-6);display:inline;fill:#6ee7b7">
+      <path
+         d="M 8.6457235,19.757606 V 17.648269 H 12.192397 V 8.2029185 L 8.6270568,10.85359 V 8.3895855 L 11.763062,6.1309147 h 2.762672 V 17.648269 h 2.856005 v 2.109337 z"
+         style="font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono Bold'"
+         id="path2749" />
+    </g>
   </g>
 </svg>
