@@ -16,6 +16,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             whoami
+            cargo version
             cd bitscalc
             git pull
             make deploy
