@@ -19,6 +19,7 @@
     let commandChannel = writable("");
 
     commandChannel.subscribe(evaluateCommand);
+    evaluateCommand("help")
     evaluateCommand("info")
 
     function evaluateCommand(command) {
