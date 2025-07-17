@@ -60,7 +60,11 @@ impl<V: PrimInt + WrappingAdd + WrappingSub + Display + LowerHex + Binary> Value
     }
 
     fn remainder(self, other: Self) -> Result<Self> {
-        Ok(self.rem(other))
+        if other.is_zero() {
+            Err("Cannot divide by 0.".into())
+        } else {
+            Ok(self.rem(other))
+        }
     }
 
     fn addition(self, other: Self) -> Result<Self> {
