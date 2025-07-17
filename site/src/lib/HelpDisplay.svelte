@@ -8,7 +8,7 @@ import Example from "./Example.svelte";
 <H1>
     Bitscalc User Manual
 </H1>
-<div class="font-mono flex flex-row my-4 gap-4 text-sm">
+<div class="font-mono flex flex-col md:flex-row my-4 gap-4 text-sm">
     <div class="flex flex-col">
         <div class="font-mono">
             Enter an expression above to get started. Operations are listed in order of precedence. Only integer values are

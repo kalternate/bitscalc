@@ -23,7 +23,7 @@
         <hr class="my-2">
         <div class="flex flex-col">
             <div class="flex flex-row  items-center space-x-1">
-                <div class="montserrat text-xs text-zinc-400 align-middle ">FORMAT</div>
+                <div class="montserrat text-xs text-zinc-400 align-middle ">DISPLAY FORMAT</div>
                 <FormatButton bind:format={format} myFormat="dec">DEC</FormatButton>
                 <FormatButton bind:format={format} myFormat="hex">HEX</FormatButton>
                 <FormatButton bind:format={format} myFormat="bin">BIN</FormatButton>
