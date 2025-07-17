@@ -45,6 +45,12 @@ fn div() {
 
 #[test]
 #[wasm_bindgen_test]
+fn div_by_zero() {
+    assert!(evaluate::<i64>("12/0").error.is_some());
+}
+
+#[test]
+#[wasm_bindgen_test]
 fn log_not() {
     assert_eq!(test_eval("!0"), 1);
     assert_eq!(test_eval("!0+!0+!0"), 3);
