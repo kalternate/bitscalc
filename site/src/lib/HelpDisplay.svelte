@@ -5,17 +5,21 @@ import H3 from "./H3.svelte";
 import Example from "./Example.svelte";
 </script>
 
-<H1>
-    Bitscalc User Manual
-</H1>
-<div class="font-mono flex flex-col md:flex-row my-4 gap-4 text-sm">
+
+<div class="font-mono flex flex-col md:flex-row gap-4 text-sm">
     <div class="flex flex-col">
-        <div class="font-mono">
+        <H1>
+            How to Use Bitscalc...
+        </H1>
+        <div>
             Enter an expression above to get started. Operations are listed in order of precedence. Only integer values are
             supported. Operations follow C-like behavior. Division results are truncated toward zero. Bitwise operations
             perform logical operations on corresponding bits of integers. Logical operations treat 0 as false and any
             non-zero value as true. Boolean operations return 1 for true and 0 for false.
         </div>
+
+        <H1>How do Integer Operations Work?</H1>
+
 
         <H2>
             Arithmetic Operations
