@@ -27,5 +27,10 @@ deploy: build
 	rm -rf /var/www/bitscalc
 	cp -r site/dist /var/www/bitscalc
 
+test-lib:
+	cd lib && cargo test
+
+test: test-lib
+
 cli:
 	cd lib && cargo run --example=cli
