@@ -19,7 +19,7 @@ build-site: install
 	cd site && npm run build
 
 build-lib:
-	cd lib && wasm-pack build --target web
+	cd lib && wasm-pack build --release --target web
 
 build: build-lib build-site
 
@@ -33,4 +33,4 @@ test-lib:
 test: test-lib
 
 cli:
-	cd lib && cargo run --release --example=cli
+	cd lib && cargo run --example=cli
