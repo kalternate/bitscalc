@@ -1,4 +1,6 @@
 
+dev: build-lib install
+	cd site && npm run dev
 
 clean-site:
 	cd site && rm -rf node_modules/
@@ -20,9 +22,6 @@ build-lib:
 	cd lib && wasm-pack build --target web
 
 build: build-lib build-site
-
-dev: build-lib install
-	cd site && npm run dev
 
 deploy: build
 	rm -rf /var/www/bitscalc

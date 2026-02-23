@@ -120,5 +120,5 @@ fn parse_numeric<V: Value>(token: &str) -> Result<V, Error> {
             V::from_str_radix(token, 10)
         }
     }
-    .map_err(|_| Error(format!("error: cannot parse '{}'", token)))
+    .map_err(|_| Error(format!("Unexpected symbol '{}'.", token)))
 }

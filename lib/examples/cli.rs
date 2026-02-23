@@ -13,7 +13,9 @@ fn main() -> Result<(), std::io::Error> {
            
             let eval: Evaluation<isize> = evaluate(&input);
 
-            if let Some(result) = eval.token.map(|t| t.format).flatten() {
+            if let Some(error) = eval.error {
+                println!("Error: {}", error);
+            } else if let Some(result) = eval.token.map(|t| t.format).flatten() {
                 for step in eval.steps {
                     if let Some(left) = step.left {
                         println!("{} {} {} = {}", left.text, step.op, step.right.text, step.result.text)

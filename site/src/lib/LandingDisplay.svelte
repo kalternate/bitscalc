@@ -9,11 +9,11 @@
 <div class="font-mono">
                 Bitscalc is a binary integer calculator for quickly evaluating programming expressions. It supports arithmetic, logical, and bitwise operators with C-like precedence. Step-by-step results are shown in decimal, hexadecimal, and binary. Enter an expression above to get started.
 </div>
-<div class="font-mono italic mt-2 text-zinc-400">
+<div class="font-mono italic mt-2 text-zinc-400 text-sm">
     If you use Bitscalc, I'd love to hear from you! Submit feedback using the link below or email me at keaganmedwards@gmail.com.
 </div>
 <div class="font-mono text-zinc-400">
-    v1.2 
+    v1.3 
     —
     <button on:click={commandChannel.set("help")} class="underline text-sky-300">
         help
@@ -26,21 +26,25 @@
     </a>
 </div>
 
-<div class="font-mono mt-4 text-zinc-400">
+<div class="font-mono mt-4 text-zinc-400 text-sm">
     <h2 class="text-xl italic ">Changelog</h2>
     <hr class="border-zinc-400">
-    <div class="mt-4">Version v1.2 — 11-20-2024</div>
+    <div class="mt-2">Version v1.3 — 02-22-2026</div>
+    <div>— Added operator manual to help section</div>
+    <div>— Improved responsive design</div>
+
+    <div class="mt-2">Version v1.2 — 11-20-2024</div>
     <div>— Revamped site style</div>
     <div>— New favicon</div>
     <div>— Added feeback form </div>
     <div>— Added changelog </div>
 
-    <div class="mt-4">Version v1.1 — 6-15-2024</div>
+    <div class="mt-2">Version v1.1 — 6-15-2024</div>
     <div>— Added support for multiple integer formats</div>
     <div>— Added help page </div>
     <div>— Improved binary formating </div>
     <div>— Style & bug fixes </div>
 
-    <div class="mt-4">Version v1.0 — 5-19-2024</div>
+    <div class="mt-2">Version v1.0 — 5-19-2024</div>
     <div>— Initial release</div>
 </div>

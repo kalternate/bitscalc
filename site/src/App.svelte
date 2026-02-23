@@ -19,6 +19,7 @@
     let commandChannel = writable("");
 
     commandChannel.subscribe(evaluateCommand);
+    evaluateCommand("help")
     evaluateCommand("info")
 
     function evaluateCommand(command) {
@@ -77,21 +78,29 @@
 
     <div class="flex justify-center">
         <div class="flex flex-grow flex-col justify-center justify-items-center max-w-[64rem]">
-            <div class="flex flex-row gap-2 mt-1">
-                <SettingButton buttonChannel={signedChannel} value={true}>signed</SettingButton>
-                <SettingButton buttonChannel={signedChannel} value={false}>unsigned</SettingButton>
-                <div>
-                —
-                </div>
-                <SettingButton buttonChannel={sizeChannel} value={64}>64-bit</SettingButton>
-                <SettingButton buttonChannel={sizeChannel} value={32}>32-bit</SettingButton>
-                <SettingButton buttonChannel={sizeChannel} value={16}>16-bit</SettingButton>
-                <SettingButton buttonChannel={sizeChannel} value={8}>8-bit</SettingButton>
-            </div>
-
             {#if error}
-                <div class="text-red-400 mx-1" in:fade={{ delay: 0, duration: 250 }}>{error}</div>
+                <div class="text-red-400 font-mono mt-1" in:fade={{ delay: 0, duration: 250 }}>Error: {error}</div>
             {/if}
+
+            <div class="montserrat text-xs text-zinc-400 mt-2">
+                INTEGER FORMAT
+            </div>
+            <div class="flex flex-row gap-2">
+                <div class="flex flex-col text-sm sm:text-base sm:flex-row sm:gap-2">
+                    <SettingButton buttonChannel={signedChannel} value={true}>signed</SettingButton>
+                    <SettingButton buttonChannel={signedChannel} value={false}>unsigned</SettingButton>
+                </div>
+                <div class="hidden sm:inline">
+                &mdash;
+                </div>
+                <div class="flex flex-col text-sm sm:text-base sm:flex-row sm:gap-2">
+                    <SettingButton buttonChannel={sizeChannel} value={64}>64-bit</SettingButton>
+                    <SettingButton buttonChannel={sizeChannel} value={32}>32-bit</SettingButton>
+                    <SettingButton buttonChannel={sizeChannel} value={16}>16-bit</SettingButton>
+                    <SettingButton buttonChannel={sizeChannel} value={8}>8-bit</SettingButton>
+                </div>
+
+            </div>
 
             <div class="flex flex-grow flex-col-reverse">
                 {#each panels as panelData (panelData.index)}

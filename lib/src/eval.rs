@@ -8,7 +8,7 @@ use crate::FormattedValue;
 use crate::Step;
 use crate::Token;
 use crate::Value;
-use crate::{Error, Expr};
+use crate::{Error, Expr, Result};
 
 #[derive(Debug, Serialize)]
 pub struct Evaluation<V> {
@@ -123,13 +123,13 @@ fn evaluate_exprs<V: Value>(
     expressions: &[Expr<V>],
     steps: &mut Vec<Step>,
     mut tag_counter: &mut usize,
-) -> Result<Expr<V>, Error> {
+) -> Result<Expr<V>> {
     let mut index = 0;
     let mut exprs = VecDeque::new();
 
     if expressions.is_empty() {
         return Err(Error(format!(
-            "parse error: cannot fully evaluate expression"
+            "Cannot fully evaluate expression."
         )));
     }
 
@@ -194,21 +194,21 @@ fn evaluate_exprs<V: Value>(
             ("/", V::division),
             ("%", V::remainder),
         ],
-    );
+    )?;
 
     exprs = evaluate_binary_op(
         exprs,
         steps,
         &mut tag_counter,
         &[("+", V::addition), ("-", V::subtraction)],
-    );
+    )?;
 
     exprs = evaluate_binary_op(
         exprs,
         steps,
         &mut tag_counter,
         &[("<<", V::left_bitshift), (">>", V::right_bitshift)],
-    );
+    )?;
 
     exprs = evaluate_binary_op(
         exprs,
@@ -220,35 +220,35 @@ fn evaluate_exprs<V: Value>(
             (">=", V::greater_than_or_equal),
             ("<=", V::less_than_or_equal),
         ],
-    );
+    )?;
 
     exprs = evaluate_binary_op(
         exprs,
         steps,
         &mut tag_counter,
         &[("==", V::equals), ("!=", V::not_equals)],
-    );
+    )?;
 
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", V::bitwise_and)]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^", V::bitwise_xor)]);
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("|", V::bitwise_or)]);
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&", V::bitwise_and)])?;
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^", V::bitwise_xor)])?;
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("|", V::bitwise_or)])?;
 
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&&", V::logical_and)]);
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("&&", V::logical_and)])?;
 
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^^", V::logical_xor)]);
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("^^", V::logical_xor)])?;
 
-    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("||", V::logical_or)]);
+    exprs = evaluate_binary_op(exprs, steps, &mut tag_counter, &[("||", V::logical_or)])?;
 
     if exprs.len() != 1 {
         Err(Error(format!(
-            "parse error: cannot fully evaluate expression"
+            "Cannot fully evaluate expression."
         )))
     } else {
         if let Some(expr) = exprs.pop_front() {
             Ok(expr)
         } else {
             Err(Error(format!(
-                "parse error: cannot fully evaluate expression"
+                "Cannot fully evaluate expression."
             )))
         }
     }
@@ -258,8 +258,8 @@ fn evaluate_binary_op<V: Value>(
     mut exprs: VecDeque<Expr<V>>,
     steps: &mut Vec<Step>,
     tag_counter: &mut usize,
-    op_table: &[(&'static str, fn(V, V) -> V)],
-) -> VecDeque<Expr<V>> {
+    op_table: &[(&'static str, fn(V, V) -> Result<V>)],
+) -> Result<VecDeque<Expr<V>>> {
     let mut results = VecDeque::new();
 
     while let Some(expr) = exprs.pop_front() {
@@ -272,7 +272,7 @@ fn evaluate_binary_op<V: Value>(
                             exprs.pop_front();
                             exprs.pop_front();
 
-                            let result_num = op_fn(left_num, right_num);
+                            let result_num = op_fn(left_num, right_num)?;
 
                             let result_tok = Token {
                                 text: result_num.to_string(),
@@ -297,7 +297,7 @@ fn evaluate_binary_op<V: Value>(
         }
     }
 
-    results
+    Ok(results)
 }
 
 fn evaluate_unary_op<V: Value>(

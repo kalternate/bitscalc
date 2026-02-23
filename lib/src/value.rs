@@ -1,3 +1,5 @@
+use crate::Result;
+
 use std::fmt::{Binary, Display, LowerHex};
 
 use num_traits::{PrimInt, WrappingAdd, WrappingSub};
@@ -7,25 +9,25 @@ pub trait Value: PrimInt + Display + LowerHex + Binary {
     fn negative(self) -> Self;
     fn logical_not(self) -> Self;
     fn bitwise_not(self) -> Self;
-    fn multiplication(self, other: Self) -> Self;
-    fn division(self, other: Self) -> Self;
-    fn remainder(self, other: Self) -> Self;
-    fn addition(self, other: Self) -> Self;
-    fn subtraction(self, other: Self) -> Self;
-    fn left_bitshift(self, other: Self) -> Self;
-    fn right_bitshift(self, other: Self) -> Self;
-    fn less_than(self, other: Self) -> Self;
-    fn greater_than(self, other: Self) -> Self;
-    fn less_than_or_equal(self, other: Self) -> Self;
-    fn greater_than_or_equal(self, other: Self) -> Self;
-    fn equals(self, other: Self) -> Self;
-    fn not_equals(self, other: Self) -> Self;
-    fn bitwise_and(self, other: Self) -> Self;
-    fn bitwise_xor(self, other: Self) -> Self;
-    fn bitwise_or(self, other: Self) -> Self;
-    fn logical_and(self, other: Self) -> Self;
-    fn logical_xor(self, other: Self) -> Self;
-    fn logical_or(self, other: Self) -> Self;
+    fn multiplication(self, other: Self) -> Result<Self>;
+    fn division(self, other: Self) -> Result<Self>;
+    fn remainder(self, other: Self) -> Result<Self>;
+    fn addition(self, other: Self) -> Result<Self>;
+    fn subtraction(self, other: Self) -> Result<Self>;
+    fn left_bitshift(self, other: Self) -> Result<Self>;
+    fn right_bitshift(self, other: Self) -> Result<Self>;
+    fn less_than(self, other: Self) -> Result<Self>;
+    fn greater_than(self, other: Self) -> Result<Self>;
+    fn less_than_or_equal(self, other: Self) -> Result<Self>;
+    fn greater_than_or_equal(self, other: Self) -> Result<Self>;
+    fn equals(self, other: Self) -> Result<Self>;
+    fn not_equals(self, other: Self) -> Result<Self>;
+    fn bitwise_and(self, other: Self) -> Result<Self>;
+    fn bitwise_xor(self, other: Self) -> Result<Self>;
+    fn bitwise_or(self, other: Self) -> Result<Self>;
+    fn logical_and(self, other: Self) -> Result<Self>;
+    fn logical_xor(self, other: Self) -> Result<Self>;
+    fn logical_or(self, other: Self) -> Result<Self>;
 }
 
 impl<V: PrimInt + WrappingAdd + WrappingSub + Display + LowerHex + Binary> Value for V {
@@ -45,120 +47,128 @@ impl<V: PrimInt + WrappingAdd + WrappingSub + Display + LowerHex + Binary> Value
         !self
     }
 
-    fn multiplication(self, other: Self) -> Self {
-        self * other
+    fn multiplication(self, other: Self) -> Result<Self> {
+        Ok(self * other)
     }
 
-    fn division(self, other: Self) -> Self {
-        self / other
+    fn division(self, other: Self) -> Result<Self> {
+        if other.is_zero() {
+            Err("Cannot divide by 0.".into())
+        } else {
+            Ok(self / other)
+        }
     }
 
-    fn remainder(self, other: Self) -> Self {
-        self.rem(other)
+    fn remainder(self, other: Self) -> Result<Self> {
+        if other.is_zero() {
+            Err("Cannot divide by 0.".into())
+        } else {
+            Ok(self.rem(other))
+        }
     }
 
-    fn addition(self, other: Self) -> Self {
-        self + other
+    fn addition(self, other: Self) -> Result<Self> {
+        Ok(self + other)
     }
 
-    fn subtraction(self, other: Self) -> Self {
-        self - other
+    fn subtraction(self, other: Self) -> Result<Self> {
+        Ok(self - other)
     }
 
-    fn left_bitshift(self, other: Self) -> Self {
+    fn left_bitshift(self, other: Self) -> Result<Self> {
         let shift = other.to_usize().unwrap_or(0);
-        self.shl(shift)
+        Ok(self.shl(shift))
     }
 
-    fn right_bitshift(self, other: Self) -> Self {
+    fn right_bitshift(self, other: Self) -> Result<Self> {
         let shift = other.to_usize().unwrap_or(0);
-        self.shr(shift)
+        Ok(self.shr(shift))
     }
 
-    fn less_than(self, other: Self) -> Self {
-        if self < other {
+    fn less_than(self, other: Self) -> Result<Self> {
+        Ok(if self < other {
             V::one()
         } else {
             V::zero()
-        }
+        })
     }
 
-    fn greater_than(self, other: Self) -> Self {
-        if self > other {
+    fn greater_than(self, other: Self) -> Result<Self> {
+        Ok(if self > other {
             V::one()
         } else {
             V::zero()
-        }
+        })
     }
 
-    fn less_than_or_equal(self, other: Self) -> Self {
-        if self <= other {
+    fn less_than_or_equal(self, other: Self) -> Result<Self> {
+        Ok(if self <= other {
             V::one()
         } else {
             V::zero()
-        }
+        })
     }
 
-    fn greater_than_or_equal(self, other: Self) -> Self {
-        if self >= other {
+    fn greater_than_or_equal(self, other: Self) -> Result<Self> {
+        Ok(if self >= other {
             V::one()
         } else {
             V::zero()
-        }
+        })
     }
 
-    fn equals(self, other: Self) -> Self {
-        if self == other {
+    fn equals(self, other: Self) -> Result<Self> {
+        Ok(if self == other {
             V::one()
         } else {
             V::zero()
-        }
+        })
     }
 
-    fn not_equals(self, other: Self) -> Self {
-        if self != other {
+    fn not_equals(self, other: Self) -> Result<Self> {
+        Ok(if self != other {
             V::one()
         } else {
             V::zero()
-        }
+        })
     }
 
-    fn bitwise_and(self, other: Self) -> Self {
-        self & other
+    fn bitwise_and(self, other: Self) -> Result<Self> {
+        Ok(self & other)
     }
 
-    fn bitwise_xor(self, other: Self) -> Self {
-        self ^ other
+    fn bitwise_xor(self, other: Self) -> Result<Self> {
+        Ok(self ^ other)
     }
 
-    fn bitwise_or(self, other: Self) -> Self {
-        self | other
+    fn bitwise_or(self, other: Self) -> Result<Self> {
+        Ok(self | other)
     }
 
-    fn logical_and(self, other: Self) -> Self {
-        if self.is_zero() || other.is_zero() {
+    fn logical_and(self, other: Self) -> Result<Self> {
+        Ok(if self.is_zero() || other.is_zero() {
             V::zero()
         } else {
             V::one()
-        }
+        })
     }
 
-    fn logical_xor(self, other: Self) -> Self {
-        if self.is_zero() && other.is_zero() {
+    fn logical_xor(self, other: Self) -> Result<Self> {
+        Ok(if self.is_zero() && other.is_zero() {
             V::zero()
         } else if !self.is_zero() && !other.is_zero() {
             V::zero()
         } else {
             V::one()
-        }
+        })
     }
 
-    fn logical_or(self, other: Self) -> Self {
-        if self.is_zero() && other.is_zero() {
+    fn logical_or(self, other: Self) -> Result<Self> {
+        Ok(if self.is_zero() && other.is_zero() {
             V::zero()
         } else {
             V::one()
-        }
+        })
     }
 }
 
